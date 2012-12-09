@@ -1,0 +1,11 @@
+{
+    "name": "goutte/tree-bundle",
+    "type": "symfony-bundle",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "autoload": {
+        "psr-0": { "Goutte\\WordpressBundle": "" }
+    },
+    "target-dir": "Goutte/TreeBundle"
+}
