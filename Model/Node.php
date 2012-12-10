@@ -152,6 +152,21 @@ abstract class Node implements NodeInterface
     }
 
     /**
+     * @return NodeInterface
+     */
+    public function getRoot()
+    {
+        if ($this->isRoot()) {
+            return $this;
+        } else {
+            return $this->getParent()->getRoot();
+        }
+    }
+
+
+    // fixme
+
+    /**
      * @return TreeInterface|null
      */
     public function getTree()

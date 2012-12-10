@@ -127,6 +127,15 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->nodeA->getParent(), "It should retourn null for the root node");
     }
 
+    public function testGetRoot()
+    {
+        $this->setUpTestTree();
+
+        $this->assertEquals($this->nodeA, $this->nodeA->getRoot(), "It should return the node if it is the root");
+        $this->assertEquals($this->nodeA, $this->nodeB->getRoot(), "It should return the root node");
+        $this->assertEquals($this->nodeA, $this->nodeG->getRoot(), "It should return the root node");
+    }
+
     /**
      * @return Node
      */

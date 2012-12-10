@@ -1,7 +1,7 @@
 TreeBundle
 ==========
 
-Provides the Node and Tree interfaces and classes for your tree-able entities.
+Provides Node and Tree interfaces and abstract classes for your tree-able models.
 
 
 Testing

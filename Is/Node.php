@@ -64,6 +64,11 @@ interface Node {
     public function addChild(Node $node);
 
     /**
+     * @return Node
+     */
+    public function getRoot();
+
+    /**
      * @return Tree|null
      */
     public function getTree();
