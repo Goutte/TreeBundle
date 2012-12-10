@@ -21,6 +21,20 @@ interface Node {
     public function isChildOf(Node $node);
 
     /**
+     * @param Node $node
+     * @return bool
+     */
+    public function hasChild(Node $node);
+
+    /**
+     * Sugary alias for hasChild()
+     * @param Node $node
+     * @return bool
+     */
+    public function isParentOf(Node $node);
+
+
+    /**
      * @return Node|null
      */
     public function getPreviousSibling();
@@ -39,20 +53,6 @@ interface Node {
      * @param Node|null $node
      */
     public function setParent($node);
-
-    /**
-     * Sugary alias for hasChild()
-     * @param Node $node
-     * @return bool
-     */
-    public function isParentOf(Node $node);
-
-    /**
-     * @param Node $node
-     * @return bool
-     */
-    public function hasChild(Node $node);
-
     /**
      * @return Node[]
      */
