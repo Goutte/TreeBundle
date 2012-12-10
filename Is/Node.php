@@ -36,14 +36,32 @@ interface Node {
     public function getParent();
 
     /**
-     * @param Node $node
+     * @param Node|null $node
      */
-    public function setParent(Node $node);
+    public function setParent($node);
+
+    /**
+     * Sugary alias for hasChild()
+     * @param Node $node
+     * @return bool
+     */
+    public function isParentOf(Node $node);
+
+    /**
+     * @param Node $node
+     * @return bool
+     */
+    public function hasChild(Node $node);
 
     /**
      * @return Node[]
      */
     public function getChildren();
+
+    /**
+     * @param Node $node
+     */
+    public function addChild(Node $node);
 
     /**
      * @return Tree|null
