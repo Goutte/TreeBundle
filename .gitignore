@@ -9,3 +9,6 @@
 
 # Configuration
 phpunit.xml
+
+# Composer
+vendor/*
