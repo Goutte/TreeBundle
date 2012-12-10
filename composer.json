@@ -1,11 +1,23 @@
 {
-    "name": "goutte/tree-bundle",
-    "type": "symfony-bundle",
-    "require": {
-        "php": ">=5.3.3"
-    },
-    "autoload": {
-        "psr-0": { "Goutte\\TreeBundle": "" }
-    },
-    "target-dir": "Goutte/TreeBundle"
+  "name": "goutte/tree-bundle",
+  "type": "symfony-bundle",
+  "description": "Goutte's TreeBundle",
+  "keywords": ["Tree", "Node"],
+  "homepage": "https://github.com/Goutte/TreeBundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name":  "Goutte",
+      "email": "antoine@goutenoir.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3"
+  },
+  "autoload": {
+    "psr-0": {
+      "Goutte\\TreeBundle": ""
+    }
+  },
+  "target-dir": "Goutte/TreeBundle"
 }
