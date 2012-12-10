@@ -6,33 +6,56 @@ use Goutte\TreeBundle\Model\Node;
 
 class NodeTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Node
+     */
+    protected $nodeA = null;
+    /**
+     * @var Node
+     */
+    protected $nodeB = null;
+    /**
+     * @var Node
+     */
+    protected $nodeC = null;
+    /**
+     * @var Node
+     */
+    protected $nodeD = null;
+    /**
+     * @var Node
+     */
+    protected $nodeE = null;
+
+    public function setUp()
+    {
+        $this->nodeA = $this->getNode();
+        $this->nodeB = $this->getNode();
+        $this->nodeC = $this->getNode();
+        $this->nodeD = $this->getNode();
+        $this->nodeE = $this->getNode();
+    }
+
     public function testIsRoot()
     {
-        $node01 = $this->getNode();
-        $node02 = $this->getNode();
+        $this->assertTrue($this->nodeA->isRoot(), "It should be the root if it's alone");
 
-        $this->assertTrue($node01->isRoot(), "It should be the root if it's alone");
+        $this->nodeA->setParent($this->nodeB);
+        $this->assertFalse($this->nodeA->isRoot(), "It should not be the root if it has a parent");
 
-        $node01->setParent($node02);
-        $this->assertFalse($node01->isRoot(), "It should not be the root if it has a parent");
-
-        $node01->setParent(null);
-        $this->assertTrue($node01->isRoot(), "It should be the root again if its parent is set to null");
+        $this->nodeA->setParent(null);
+        $this->assertTrue($this->nodeA->isRoot(), "It should be the root again if its parent is set to null");
     }
 
     public function testIsLeaf()
     {
-        $node01 = $this->getNode();
-        $node02 = $this->getNode();
-        $node03 = $this->getNode();
+        $this->assertTrue($this->nodeA->isLeaf(), "It should be a leaf if it's alone");
 
-        $this->assertTrue($node01->isLeaf(), "It should be a leaf if it's alone");
+        $this->nodeA->addChild($this->nodeB);
+        $this->assertFalse($this->nodeA->isLeaf(), "It should not be a leaf if it has a child");
 
-        $node01->addChild($node02);
-        $this->assertFalse($node01->isLeaf(), "It should not be a leaf if it has a child");
-
-        $node02->setParent($node03);
-        $this->assertFalse($node03->isLeaf(), "It should not be a leaf if it's the parent of another node");
+        $this->nodeB->setParent($this->nodeC);
+        $this->assertFalse($this->nodeC->isLeaf(), "It should not be a leaf if it's the parent of another node");
     }
 
     /**
