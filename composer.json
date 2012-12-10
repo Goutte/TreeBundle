@@ -5,7 +5,7 @@
         "php": ">=5.3.3"
     },
     "autoload": {
-        "psr-0": { "Goutte\\WordpressBundle": "" }
+        "psr-0": { "Goutte\\TreeBundle": "" }
     },
     "target-dir": "Goutte/TreeBundle"
 }
