@@ -6,7 +6,12 @@ use Goutte\TreeBundle\Is\Driver;
 use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\ValuedNode;
 
-
+/**
+ * Simple parenthesis driver, for strings like so: Root(ChildA(),ChildB(ChildBA(),ChildBB()))
+ *
+ * Notes :
+ * - No spaces
+ */
 class Parenthesis extends StringUtilsDriver implements Driver
 {
     protected $factory;

@@ -2,14 +2,24 @@
 
 namespace Goutte\TreeBundle\Driver;
 
+/**
+ * This oughta be moved to a Trait, obviously
+ */
 class StringUtilsDriver
 {
-
+    /**
+     * @param mixed $var
+     * @return bool
+     */
     protected function isNumeric($var)
     {
         return is_numeric($var);
     }
 
+    /**
+     * @param mixed $var
+     * @return bool
+     */
     protected function isBoolean($var)
     {
         return true === $var || false === $var || 'true' === $var || 'false' === $var;
@@ -25,8 +35,9 @@ class StringUtilsDriver
     protected function explode($string)
     {
         $depth = 0;
-        $array = array();
         $positions = array();
+
+        // find the indexes of the topmost delimiters
         for ($i = 0; $i < strlen($string); $i++) {
             switch ($string{$i}) {
                 case '(':
@@ -43,6 +54,7 @@ class StringUtilsDriver
             }
         }
 
+        $array = array();
         $child = '';
         for ($i = 0; $i < strlen($string); $i++) {
             if (in_array($i, $positions)) {
@@ -53,7 +65,7 @@ class StringUtilsDriver
             }
         }
         if ('' != $child) {
-            $array[] = $child;
+            $array[] = $child; // add the chunk after the last delimiter
         }
 
         return $array;

@@ -12,7 +12,7 @@ class ParenthesisTest extends DriverTestCase
         return 'Goutte\TreeBundle\Driver\Parenthesis';
     }
 
-    public function treeAsStringProvider()
+    public function treeAsStringThatStaysTheSameProvider()
     {
         return array(
             array("Alone()"),

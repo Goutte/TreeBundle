@@ -7,10 +7,11 @@ use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\ValuedNode;
 
 /**
- * Driver for Timbre.js
+ * Driver (quite a dumb one, I'm afraid) for Timbre.js (http://mohayonao.github.com/timbre/)
  *
  * Notes :
- * Numeric values need to be encapsulated in T(), as in T("+", T(6), T(7)) instead of T("+", 6, 7)
+ * - Numeric values need to be encapsulated in T(), as in T("+",T(6),T(7)) instead of T("+",6,7)
+ * - No spaces
  */
 class Timbre extends StringUtilsDriver implements Driver
 {
@@ -30,9 +31,7 @@ class Timbre extends StringUtilsDriver implements Driver
 
         $value = (string) $node->getValue();
 
-        if ($this->isNumeric($value)) {
-            $s = "T({$value})";
-        } else if ($this->isBoolean($value)) {
+        if ($this->isNumeric($value) || $this->isBoolean($value)) {
             $s = "T({$value})";
         } else {
             $s  = 'T(';
