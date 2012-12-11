@@ -6,8 +6,13 @@ use Goutte\TreeBundle\Is\Driver;
 use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\ValuedNode;
 
-
-class Parenthesis extends StringUtilsDriver implements Driver
+/**
+ * Driver for Timbre.js
+ *
+ * Notes :
+ * Numeric values need to be encapsulated in T(), as in T("+", T(6), T(7)) instead of T("+", 6, 7)
+ */
+class Timbre extends StringUtilsDriver implements Driver
 {
     protected $factory;
 
@@ -23,10 +28,21 @@ class Parenthesis extends StringUtilsDriver implements Driver
             $children[] = $this->nodeToString($child);
         }
 
-        $s = (string) $node->getValue();
-        $s .= '(';
-        $s .= implode(',',$children);
-        $s .= ')';
+        $value = (string) $node->getValue();
+
+        if ($this->isNumeric($value)) {
+            $s = "T({$value})";
+        } else if ($this->isBoolean($value)) {
+            $s = "T({$value})";
+        } else {
+            $s  = 'T(';
+            $s .= '"'.$value.'"';
+            if (!empty($children)) {
+                $s .= ',';
+                $s .= implode(',',$children);
+            }
+            $s .= ')';
+        }
 
         return $s;
     }
@@ -34,7 +50,7 @@ class Parenthesis extends StringUtilsDriver implements Driver
     public function stringToNode($string)
     {
         $matches = array();
-        if (!preg_match("!^([^(]+)\((.*)\)$!", $string, $matches)) {
+        if (!preg_match('!^T\("?([^,"]+)"?,?(.*)\)$!', $string, $matches)) {
             throw new \Exception("Cannot convert '{$string}' to node.");
         } else {
             $value = $matches[1];
