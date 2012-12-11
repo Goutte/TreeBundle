@@ -39,9 +39,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         // |  +--C
         // |  +--D
         // |  |  +--G
-        // |  |
         // |  +--E
-        // |
         // +--F
 
         $this->nodeA->addChild($this->nodeB);

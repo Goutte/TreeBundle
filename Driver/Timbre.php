@@ -4,7 +4,7 @@ namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Is\Driver;
 use Goutte\TreeBundle\Is\NodeFactory;
-use Goutte\TreeBundle\Is\ValuedNode;
+use Goutte\TreeBundle\Is\Node;
 
 /**
  * Driver (quite a dumb one, I'm afraid) for Timbre.js (http://mohayonao.github.com/timbre/)
@@ -22,7 +22,7 @@ class Timbre extends StringUtilsDriver implements Driver
         $this->factory = $factory;
     }
 
-    public function nodeToString(ValuedNode $node)
+    public function nodeToString(Node $node)
     {
         $children = array();
         foreach ($node->getChildren() as $child) {
@@ -54,7 +54,7 @@ class Timbre extends StringUtilsDriver implements Driver
         } else {
             $value = $matches[1];
             $children = $matches[2];
-            /** @var $node ValuedNode */
+            /** @var $node Node */
             $node = $this->factory->createNode();
             $node->setValue($value);
 

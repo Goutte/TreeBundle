@@ -69,6 +69,16 @@ interface Node {
      */
     public function getRoot();
 
+    /**
+     * @return mixed
+     */
+    public function getValue();
+
+    /**
+     * @param $value
+     */
+    public function setValue($value);
+
 //    /**
 //     * @return Tree|null
 //     */

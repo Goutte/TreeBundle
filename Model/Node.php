@@ -12,11 +12,12 @@ abstract class Node implements NodeInterface
      */
     protected $parent;
 
-//    /**
-//     * @var TreeInterface
-//     */
-//    protected $tree;
-
+    /**
+     * The value held by the Node, may be pretty much anything (operator function, operand, etc.) but must be
+     * "stringable" for some Drivers
+     * @var mixed
+     */
+    protected $value;
 
     /**
      * @var NodeInterface[]
@@ -148,7 +149,7 @@ abstract class Node implements NodeInterface
      */
     public function hasChild(NodeInterface $node)
     {
-        return in_array($node, $this->children);
+        return in_array($node, $this->children, true); // strict, or will l∞p
     }
 
     /**
@@ -163,8 +164,24 @@ abstract class Node implements NodeInterface
         }
     }
 
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+
 
     // todo : think hard : do we really need the Tree class ?
+
+//    /**
+//     * @var TreeInterface
+//     */
+//    protected $tree;
 
 //    /**
 //     * @return TreeInterface|null

@@ -2,10 +2,10 @@
 
 namespace Goutte\TreeBundle\Is;
 
-use Goutte\TreeBundle\Is\ValuedNode;
+use Goutte\TreeBundle\Is\Node;
 
 interface Driver
 {
-    public function nodeToString(ValuedNode $node);
+    public function nodeToString(Node $node);
     public function stringToNode($string);
 }

@@ -2,7 +2,7 @@
 
 namespace Goutte\TreeBundle\Tests\Model;
 
-use \Goutte\TreeBundle\Factory\NodeFactory as AbstractNodeFactory;
+use Goutte\TreeBundle\Factory\NodeFactory as AbstractNodeFactory;
 
 class NodeFactory extends AbstractNodeFactory
 {

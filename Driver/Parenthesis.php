@@ -4,7 +4,7 @@ namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Is\Driver;
 use Goutte\TreeBundle\Is\NodeFactory;
-use Goutte\TreeBundle\Is\ValuedNode;
+use Goutte\TreeBundle\Is\Node;
 
 /**
  * Simple parenthesis driver, for strings like so: Root(ChildA(),ChildB(ChildBA(),ChildBB()))
@@ -21,7 +21,7 @@ class Parenthesis extends StringUtilsDriver implements Driver
         $this->factory = $factory;
     }
 
-    public function nodeToString(ValuedNode $node)
+    public function nodeToString(Node $node)
     {
         $children = array();
         foreach ($node->getChildren() as $child) {
@@ -44,7 +44,7 @@ class Parenthesis extends StringUtilsDriver implements Driver
         } else {
             $value = $matches[1];
             $children = $matches[2];
-            /** @var $node ValuedNode */
+            /** @var $node Node */
             $node = $this->factory->createNode();
             $node->setValue($value);
 
