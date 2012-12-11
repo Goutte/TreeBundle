@@ -12,11 +12,11 @@
     syntaxCheck                 = "false"
     bootstrap                   = "Tests/bootstrap.php">
   <php>
-    <server name="KERNEL_DIR" value="../../../app" />
+    <!--<server name="KERNEL_DIR" value="../../../app" /> Unused -->
   </php>
   
   <testsuites>
-    <testsuite name="Goutte WordpressBundle Test Suite">
+    <testsuite name="Goutte TreeBundle Test Suite">
       <directory suffix="Test.php">Tests</directory>
     </testsuite>
   </testsuites>
