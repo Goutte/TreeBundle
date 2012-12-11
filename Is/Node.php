@@ -24,15 +24,7 @@ interface Node {
      * @param Node $node
      * @return bool
      */
-    public function hasChild(Node $node);
-
-    /**
-     * Sugary alias for hasChild()
-     * @param Node $node
-     * @return bool
-     */
     public function isParentOf(Node $node);
-
 
     /**
      * @return Node|null
@@ -78,15 +70,5 @@ interface Node {
      * @param $value
      */
     public function setValue($value);
-
-//    /**
-//     * @return Tree|null
-//     */
-//    public function getTree();
-//
-//    /**
-//     * @param Tree $tree
-//     */
-//    public function setTree(Tree $tree);
 
 }

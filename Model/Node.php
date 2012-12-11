@@ -3,11 +3,11 @@
 namespace Goutte\TreeBundle\Model;
 
 use Goutte\TreeBundle\Is\Node as NodeInterface;
-//use Goutte\TreeBundle\Is\Tree as TreeInterface;
 
 abstract class Node implements NodeInterface
 {
     /**
+     * The parent Node, or null if this is the root
      * @var NodeInterface
      */
     protected $parent;
@@ -20,6 +20,7 @@ abstract class Node implements NodeInterface
     protected $value;
 
     /**
+     * An array of Nodes that are the direct children of this Node
      * @var NodeInterface[]
      */
     protected $children;
@@ -31,25 +32,29 @@ abstract class Node implements NodeInterface
         $this->children = array();
     }
 
-    /**
-     * @return bool
-     */
+
     public function isRoot()
     {
         return (null == $this->parent);
     }
 
-    /**
-     * @return bool
-     */
     public function isLeaf()
     {
         return (0 === count($this->children));
     }
 
+    public function isChildOf(NodeInterface $node)
+    {
+        return ($node == $this->parent);
+    }
+
+    public function isParentOf(NodeInterface $node)
+    {
+        return in_array($node, $this->children, true); // strict, or will l∞p
+    }
+
     /**
      * @throws \Exception
-     * @return NodeInterface|null
      */
     public function getPreviousSibling()
     {
@@ -69,7 +74,6 @@ abstract class Node implements NodeInterface
 
     /**
      * @throws \Exception
-     * @return NodeInterface|null
      */
     public function getNextSibling()
     {
@@ -87,74 +91,32 @@ abstract class Node implements NodeInterface
         return null;
     }
 
-    /**
-     * @return NodeInterface|null
-     */
     public function getParent()
     {
         return $this->parent;
     }
 
-    /**
-     * @param NodeInterface|null $node
-     */
     public function setParent($node)
     {
         $this->parent = $node;
-        if ($node && !$node->hasChild($this)) {
+        if ($node && !$node->isParentOf($this)) {
             $node->addChild($this);
         }
     }
 
-    /**
-     * @return NodeInterface[]
-     */
     public function getChildren()
     {
         return $this->children;
     }
 
-    /**
-     * @param NodeInterface $node
-     */
     public function addChild(NodeInterface $node)
     {
-        if (!$this->hasChild($node)) {
+        if (!$this->isParentOf($node)) {
             $this->children[] = $node; // first, or will l∞p
             $node->setParent($this);
         }
     }
 
-    /**
-     * @param NodeInterface $node
-     * @return bool
-     */
-    public function isChildOf(NodeInterface $node)
-    {
-        return ($node == $this->parent);
-    }
-
-    /**
-     * @param NodeInterface $node
-     * @return bool
-     */
-    public function isParentOf(NodeInterface $node)
-    {
-        return $this->hasChild($node);
-    }
-
-    /**
-     * @param NodeInterface $node
-     * @return bool
-     */
-    public function hasChild(NodeInterface $node)
-    {
-        return in_array($node, $this->children, true); // strict, or will l∞p
-    }
-
-    /**
-     * @return NodeInterface
-     */
     public function getRoot()
     {
         if ($this->isRoot()) {
@@ -174,31 +136,4 @@ abstract class Node implements NodeInterface
         $this->value = $value;
     }
 
-
-
-    // todo : think hard : do we really need the Tree class ?
-
-//    /**
-//     * @var TreeInterface
-//     */
-//    protected $tree;
-
-//    /**
-//     * @return TreeInterface|null
-//     */
-//    public function getTree()
-//    {
-//        return $this->tree;
-//    }
-//
-//    /**
-//     * @param TreeInterface $tree
-//     */
-//    public function setTree(TreeInterface $tree)
-//    {
-//        $this->tree = $tree;
-//        foreach ($this->children as $childNode) {
-//            $childNode->setTree($tree);
-//        }
-//    }
 }

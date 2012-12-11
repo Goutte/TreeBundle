@@ -83,20 +83,20 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->nodeB->isChildOf($this->nodeC), "It should be the child of the node set as parent");
     }
 
-    public function testHasChild()
+    public function testIsParentOf()
     {
         $this->setUpTestTree();
 
-        $this->assertTrue($this->nodeA->hasChild($this->nodeB));
-        $this->assertTrue($this->nodeA->hasChild($this->nodeF));
-        $this->assertFalse($this->nodeA->hasChild($this->nodeC));
+        $this->assertTrue($this->nodeA->isParentOf($this->nodeB));
+        $this->assertTrue($this->nodeA->isParentOf($this->nodeF));
+        $this->assertFalse($this->nodeA->isParentOf($this->nodeC));
 
-        $this->assertTrue($this->nodeB->hasChild($this->nodeC));
-        $this->assertTrue($this->nodeB->hasChild($this->nodeD));
-        $this->assertFalse($this->nodeB->hasChild($this->nodeG));
+        $this->assertTrue($this->nodeB->isParentOf($this->nodeC));
+        $this->assertTrue($this->nodeB->isParentOf($this->nodeD));
+        $this->assertFalse($this->nodeB->isParentOf($this->nodeG));
 
-        $this->assertTrue($this->nodeD->hasChild($this->nodeG));
-        $this->assertFalse($this->nodeG->hasChild($this->nodeA));
+        $this->assertTrue($this->nodeD->isParentOf($this->nodeG));
+        $this->assertFalse($this->nodeG->isParentOf($this->nodeA));
     }
 
     public function testGetPreviousSibling()

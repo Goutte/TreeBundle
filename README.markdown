@@ -1,7 +1,61 @@
 TreeBundle
 ==========
 
-Provides Node and Tree interfaces and abstract classes for your tree-able models.
+Provides Node interface and abstract class for your tree-able models.
+
+Also provides simple Drivers to import and export your Nodes from and to String representation,
+given their `value` is serializable.
+
+
+How to Use
+==========
+
+See `Goutte\TreeBundle\Is\Node` for a list of the methods provided.
+
+Extending
+---------
+
+``` php
+    use Goutte\TreeBundle\Model\Node as AbstractNode;
+    class MyNode extends AbstractNode {
+        // ...
+    }
+```
+
+Implementing
+------------
+
+``` php
+    use Goutte\TreeBundle\Is\Node as NodeInterface;
+    class MyNode implements NodeInterface {
+        // ...
+    }
+```
+
+Writing a Driver
+----------------
+
+Implement `Goutte\TreeBundle\Is\Driver` as follows :
+
+``` php
+    use Goutte\TreeBundle\Is\Driver;
+    class MyDriver implements Driver {
+        // ...
+    }
+```
+
+Extend `Goutte\TreeBundle\Factory\NodeFactory` as follows :
+
+``` php
+    use Goutte\TreeBundle\Factory\NodeFactory as AbstractNodeFactory;
+    class NodeFactory extends AbstractNodeFactory
+    {
+        public function getClass()
+        {
+            return 'MyVendor\MyBundle\Model\MyNode';
+        }
+    }
+```
 
 
 Testing
@@ -10,3 +64,21 @@ Testing
 Run composer so that the autoloader is created
 
     composer.phar install --dev
+
+Then, simply run
+
+    phpunit
+
+
+Todo
+====
+
+By order of priority, feel free to *fork'n work* !
+
+- TreeException
+- DriverException
+- Ancestors
+- AsciiDriver
+- DIC for Factories and Drivers
+- Descendants (need to coin out a proper DI way of customizing tree walking first)
+- Traits
