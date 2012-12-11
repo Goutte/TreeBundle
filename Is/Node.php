@@ -53,6 +53,7 @@ interface Node {
      * @param Node|null $node
      */
     public function setParent($node);
+
     /**
      * @return Node[]
      */
@@ -68,14 +69,14 @@ interface Node {
      */
     public function getRoot();
 
-    /**
-     * @return Tree|null
-     */
-    public function getTree();
-
-    /**
-     * @param Tree $tree
-     */
-    public function setTree(Tree $tree);
+//    /**
+//     * @return Tree|null
+//     */
+//    public function getTree();
+//
+//    /**
+//     * @param Tree $tree
+//     */
+//    public function setTree(Tree $tree);
 
 }

@@ -3,7 +3,7 @@
 namespace Goutte\TreeBundle\Model;
 
 use Goutte\TreeBundle\Is\Node as NodeInterface;
-use Goutte\TreeBundle\Is\Tree as TreeInterface;
+//use Goutte\TreeBundle\Is\Tree as TreeInterface;
 
 abstract class Node implements NodeInterface
 {
@@ -12,10 +12,10 @@ abstract class Node implements NodeInterface
      */
     protected $parent;
 
-    /**
-     * @var TreeInterface
-     */
-    protected $tree;
+//    /**
+//     * @var TreeInterface
+//     */
+//    protected $tree;
 
 
     /**
@@ -164,24 +164,24 @@ abstract class Node implements NodeInterface
     }
 
 
-    // fixme
+    // todo : think hard : do we really need the Tree class ?
 
-    /**
-     * @return TreeInterface|null
-     */
-    public function getTree()
-    {
-        return $this->tree;
-    }
-
-    /**
-     * @param TreeInterface $tree
-     */
-    public function setTree(TreeInterface $tree)
-    {
-        $this->tree = $tree;
-        foreach ($this->children as $childNode) {
-            $childNode->setTree($tree);
-        }
-    }
+//    /**
+//     * @return TreeInterface|null
+//     */
+//    public function getTree()
+//    {
+//        return $this->tree;
+//    }
+//
+//    /**
+//     * @param TreeInterface $tree
+//     */
+//    public function setTree(TreeInterface $tree)
+//    {
+//        $this->tree = $tree;
+//        foreach ($this->children as $childNode) {
+//            $childNode->setTree($tree);
+//        }
+//    }
 }
