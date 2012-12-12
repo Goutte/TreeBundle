@@ -54,6 +54,19 @@ abstract class Node implements NodeInterface
         return in_array($node, $this->children, true); // strict, or will l∞p
     }
 
+    public function isDescendantOf(NodeInterface $node)
+    {
+        if ($this->isChildOf($node)) {
+            return true;
+        } else {
+            if (!$this->isRoot()) {
+                return $this->getParent()->isDescendantOf($node);
+            } else {
+                return false;
+            }
+        }
+    }
+
     public function getPreviousSibling()
     {
         if ($this->parent) {

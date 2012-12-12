@@ -77,8 +77,9 @@ By order of priority, feel free to *fork'n work* !
 
 - ~~TreeIntegrityException~~
 - ~~DriverException~~
-- Ancestors
+- ~~isDescendantOf~~
+- isAncestorOf
 - AsciiDriver
 - DIC for Factories and Drivers
-- Descendants (need to coin out a proper DI way of customizing tree walking first)
+- Tree walking
 - Traits

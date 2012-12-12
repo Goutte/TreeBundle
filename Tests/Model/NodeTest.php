@@ -52,7 +52,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
     public function testIsRoot()
     {
-        $this->assertTrue($this->nodeA->isRoot(), "It should be the root if it's alone");
+        $this->assertTrue($this->nodeA->isRoot(), "It should initially be the root");
 
         $this->nodeA->setParent($this->nodeB);
         $this->assertFalse($this->nodeA->isRoot(), "It should not be the root if it has a parent");
@@ -63,7 +63,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
     public function testIsLeaf()
     {
-        $this->assertTrue($this->nodeA->isLeaf(), "It should be a leaf if it's alone");
+        $this->assertTrue($this->nodeA->isLeaf(), "It should initially be a leaf");
 
         $this->nodeA->addChild($this->nodeB);
         $this->assertFalse($this->nodeA->isLeaf(), "It should not be a leaf if it has a child");
@@ -129,9 +129,25 @@ class NodeTest extends \PHPUnit_Framework_TestCase
     {
         $this->setUpTestTree();
 
-        $this->assertEquals($this->nodeA, $this->nodeA->getRoot(), "It should return the node if it is the root");
+        $this->assertEquals($this->nodeA, $this->nodeA->getRoot(), "It should return itself if it is the root");
         $this->assertEquals($this->nodeA, $this->nodeB->getRoot(), "It should return the root node");
         $this->assertEquals($this->nodeA, $this->nodeG->getRoot(), "It should return the root node");
+    }
+
+    public function testIsDescendantOf()
+    {
+        $this->setUpTestTree();
+
+        foreach(array('B','C','D','E','F','G') as $nodeLetter) {
+            $node = $this->{'node'.$nodeLetter};
+            $this->assertTrue($node->isDescendantOf($this->nodeA), "All nodes but the root should be the descendant of the root");
+        }
+
+        $this->assertTrue($this->nodeB->isDescendantOf($this->nodeA), "It should be the descendant of its direct parent");
+        $this->assertTrue($this->nodeG->isDescendantOf($this->nodeB), "It should be the descendant of an ancestor");
+        $this->assertFalse($this->nodeB->isDescendantOf($this->nodeB), "It should not be a descendant of itself");
+        $this->assertFalse($this->nodeB->isDescendantOf($this->nodeC), "It should not be a descendant of a child");
+        $this->assertFalse($this->nodeB->isDescendantOf($this->nodeF), "It should not be a descendant of a sibling");
     }
 
     /**
@@ -142,3 +158,11 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         return $this->getMockForAbstractClass('Goutte\TreeBundle\Model\Node');
     }
 }
+
+// A
+// +--B
+// |  +--C
+// |  +--D
+// |  |  +--G
+// |  +--E
+// +--F
