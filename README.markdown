@@ -6,6 +6,8 @@ Provides Node interface and abstract class for your tree-able models.
 Also provides simple Drivers to import and export your Nodes from and to String representation,
 given their `value` is serializable.
 
+Pitfall : the nodes values are not escaped by the drivers (yet), so no `(`, `)` or `,`
+
 
 How to Use
 ==========
