@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Model;
 
 use Goutte\TreeBundle\Is\Node as NodeInterface;
+use Goutte\TreeBundle\Exception\TreeIntegrityException;
 
 abstract class Node implements NodeInterface
 {
@@ -53,16 +54,13 @@ abstract class Node implements NodeInterface
         return in_array($node, $this->children, true); // strict, or will l∞p
     }
 
-    /**
-     * @throws \Exception
-     */
     public function getPreviousSibling()
     {
         if ($this->parent) {
             $siblings = $this->parent->getChildren();
             $index = array_search($this, $siblings);
 
-            if (false === $index) throw new \Exception("Parent / Child inconsistency.");
+            if (false === $index) throw new TreeIntegrityException();
 
             if (0 < $index) {
                 return $siblings[$index - 1];
@@ -72,16 +70,13 @@ abstract class Node implements NodeInterface
         return null;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function getNextSibling()
     {
         if ($this->parent) {
             $siblings = $this->parent->getChildren();
             $index = array_search($this, $siblings);
 
-            if (false === $index) throw new \Exception("Parent / Child inconsistency.");
+            if (false === $index) throw new TreeIntegrityException();
 
             if ($index < (count($siblings) - 1)) {
                 return $siblings[$index + 1];

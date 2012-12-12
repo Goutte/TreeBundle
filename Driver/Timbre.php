@@ -2,6 +2,7 @@
 
 namespace Goutte\TreeBundle\Driver;
 
+use Goutte\TreeBundle\Exception\DriverException;
 use Goutte\TreeBundle\Is\Driver;
 use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\Node;
@@ -50,7 +51,7 @@ class Timbre extends StringUtilsDriver implements Driver
     {
         $matches = array();
         if (!preg_match('!^T\("?([^,"]+)"?,?(.*)\)$!', $string, $matches)) {
-            throw new \Exception("Cannot convert '{$string}' to node.");
+            throw new DriverException("Cannot convert '{$string}' to node.");
         } else {
             $value = $matches[1];
             $children = $matches[2];

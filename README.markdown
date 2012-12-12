@@ -75,8 +75,8 @@ Todo
 
 By order of priority, feel free to *fork'n work* !
 
-- TreeException
-- DriverException
+- ~~TreeIntegrityException~~
+- ~~DriverException~~
 - Ancestors
 - AsciiDriver
 - DIC for Factories and Drivers
