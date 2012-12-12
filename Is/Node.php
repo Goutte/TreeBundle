@@ -30,6 +30,12 @@ interface Node {
      * @param Node $node
      * @return bool
      */
+    public function isAncestorOf(Node $node);
+
+    /**
+     * @param Node $node
+     * @return bool
+     */
     public function isParentOf(Node $node);
 
     /**

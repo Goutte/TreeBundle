@@ -36,7 +36,7 @@ abstract class Node implements NodeInterface
 
     public function isRoot()
     {
-        return (null == $this->parent);
+        return (null === $this->parent);
     }
 
     public function isLeaf()
@@ -46,7 +46,7 @@ abstract class Node implements NodeInterface
 
     public function isChildOf(NodeInterface $node)
     {
-        return ($node == $this->parent);
+        return ($node === $this->parent);
     }
 
     public function isParentOf(NodeInterface $node)
@@ -65,6 +65,11 @@ abstract class Node implements NodeInterface
                 return false;
             }
         }
+    }
+
+    public function isAncestorOf(NodeInterface $node)
+    {
+        return $node->isDescendantOf($this);
     }
 
     public function getPreviousSibling()
