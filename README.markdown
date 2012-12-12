@@ -12,7 +12,11 @@ Pitfall : the nodes values are not escaped by the drivers (yet), so no `(`, `)` 
 How to Use
 ==========
 
-See `Goutte\TreeBundle\Is\Node` for a list of the methods provided.
+Add this bundle to your project using composer
+
+    composer require goutte/tree-bundle
+
+See `Goutte\TreeBundle\Is\Node` for a list of the methods provided by the abstract class `Goutte\TreeBundle\Model\Node`.
 
 Extending
 ---------
@@ -65,23 +69,30 @@ Testing
 
 Run composer so that the autoloader is created
 
-    composer.phar install --dev
+    composer install --dev
 
 Then, simply run
 
     phpunit
 
 
-Todo
-====
+RoadMap
+=======
 
 By order of priority, feel free to *fork'n work* !
+
+v1.0
+----
 
 - ~~TreeIntegrityException~~
 - ~~DriverException~~
 - ~~isDescendantOf~~
-- isAncestorOf
-- AsciiDriver
+- ~~isAncestorOf~~
 - DIC for Factories and Drivers
 - Tree walking
+
+v2.0
+----
+
+- AsciiDriver for multiline ascii trees, structured as the commented tree in the Tests
 - Traits
