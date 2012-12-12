@@ -32,24 +32,6 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->nodeG = $this->getNode();
     }
 
-    public function setUpTestTree()
-    {
-        // A
-        // +--B
-        // |  +--C
-        // |  +--D
-        // |  |  +--G
-        // |  +--E
-        // +--F
-
-        $this->nodeA->addChild($this->nodeB);
-        $this->nodeA->addChild($this->nodeF);
-        $this->nodeB->addChild($this->nodeC);
-        $this->nodeB->addChild($this->nodeD);
-        $this->nodeB->addChild($this->nodeE);
-        $this->nodeD->addChild($this->nodeG);
-    }
-
     public function testIsRoot()
     {
         $this->assertTrue($this->nodeA->isRoot(), "It should initially be the root");
@@ -83,9 +65,31 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->nodeB->isChildOf($this->nodeC), "It should be the child of the node set as parent");
     }
 
+    // Using Test Tree /////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function setUpTestTree()
+    {
+        // A
+        // +--B
+        // |  +--C
+        // |  +--D
+        // |  |  +--G
+        // |  +--E
+        // +--F
+
+        $this->nodeA->addChild($this->nodeB);
+        $this->nodeA->addChild($this->nodeF);
+        $this->nodeB->addChild($this->nodeC);
+        $this->nodeB->addChild($this->nodeD);
+        $this->nodeB->addChild($this->nodeE);
+        $this->nodeD->addChild($this->nodeG);
+    }
+
     public function testIsParentOf()
     {
         $this->setUpTestTree();
+
+        $this->assertFalse($this->nodeA->isParentOf($this->nodeA), "It should not be the parent of itself");
 
         $this->assertTrue($this->nodeA->isParentOf($this->nodeB));
         $this->assertTrue($this->nodeA->isParentOf($this->nodeF));
@@ -122,7 +126,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->nodeA, $this->nodeB->getParent(), "It should return the direct parent");
         $this->assertEquals($this->nodeD, $this->nodeG->getParent(), "It should return the direct parent");
 
-        $this->assertNull($this->nodeA->getParent(), "It should retourn null for the root node");
+        $this->assertNull($this->nodeA->getParent(), "It should retourn null if it is the root node");
     }
 
     public function testGetRoot()
@@ -139,6 +143,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->setUpTestTree();
 
         foreach(array('B','C','D','E','F','G') as $nodeLetter) {
+            /** @var $node Node */
             $node = $this->{'node'.$nodeLetter};
             $this->assertTrue($node->isDescendantOf($this->nodeA), "All nodes but the root should be the descendant of the root");
         }
@@ -149,6 +154,25 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->nodeB->isDescendantOf($this->nodeC), "It should not be a descendant of a child");
         $this->assertFalse($this->nodeB->isDescendantOf($this->nodeF), "It should not be a descendant of a sibling");
     }
+
+    public function testIsAncestorOf()
+    {
+        $this->setUpTestTree();
+
+        foreach(array('B','C','D','E','F','G') as $nodeLetter) {
+            /** @var $node Node */
+            $node = $this->{'node'.$nodeLetter};
+            $this->assertTrue($this->nodeA->isAncestorOf($node), "The root should be the ancestor of all nodes but itself");
+        }
+
+        $this->assertTrue($this->nodeB->isAncestorOf($this->nodeC), "It should be the ancestor of its direct children");
+        $this->assertTrue($this->nodeB->isAncestorOf($this->nodeG), "It should be the ancestor of a descendant");
+        $this->assertFalse($this->nodeB->isAncestorOf($this->nodeB), "It should not be an ancestor of itself");
+        $this->assertFalse($this->nodeD->isAncestorOf($this->nodeB), "It should not be an ancestor of a parent");
+        $this->assertFalse($this->nodeD->isAncestorOf($this->nodeE), "It should not be an ancestor of a sibling");
+    }
+
+
 
     /**
      * @return Node
