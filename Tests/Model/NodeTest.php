@@ -181,19 +181,20 @@ class NodeTest extends \PHPUnit_Framework_TestCase
     /**
      * @pending Implementation
      */
-    public function testGetPathTo()
+    public function testGetNodesAlongThePathTo()
     {
         $this->setUpTestTree();
 
-        $expectedPath = array($this->nodeE, $this->nodeB, $this->nodeC);
-        $computedPath = $this->nodeE->getPathTo($this->nodeC);
+        $expectedPath = array($this->nodeB, $this->nodeD);
+        $computedPath = $this->nodeE->getNodesAlongThePathTo($this->nodeG);
 
-        $this->assertEquals($expectedPath, $computedPath, "It should find the shortest path to the specified node");
+        $this->assertEquals($expectedPath, $computedPath, "It should find the shortest path to the destination node");
 
-        // Should the path start by $this node ?
-        // Maybe as an optional parameter $include_self ? Which default value, then ?
+        $this->assertEquals(array(), $this->nodeD->getNodesAlongThePathTo($this->nodeD), "It should return an empty array if the destination node is itself");
+        $this->assertEquals(array(), $this->nodeD->getNodesAlongThePathTo($this->nodeG), "It should return an empty array if the destination node is adjacent (child)");
+        $this->assertEquals(array(), $this->nodeF->getNodesAlongThePathTo($this->nodeA), "It should return an empty array if the destination node is adjacent (parent)");
 
-        // It should throw a ~ForeignNodesException if the two nodes are not on the same tree
+        // It should throw a ~ForeignNodesException if the destination node is not on the same tree
     }
 
 
