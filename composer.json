@@ -1,7 +1,7 @@
 {
   "name": "goutte/tree-bundle",
   "type": "symfony-bundle",
-  "description": "Goutte's Tree Library",
+  "description": "Goutte's Rooted Tree Library",
   "keywords": ["Tree", "Node"],
   "homepage": "https://github.com/Goutte/TreeBundle",
   "license": "MIT",

@@ -23,13 +23,13 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->nodeA = $this->getNode();
-        $this->nodeB = $this->getNode();
-        $this->nodeC = $this->getNode();
-        $this->nodeD = $this->getNode();
-        $this->nodeE = $this->getNode();
-        $this->nodeF = $this->getNode();
-        $this->nodeG = $this->getNode();
+        $this->nodeA = $this->createNode();
+        $this->nodeB = $this->createNode();
+        $this->nodeC = $this->createNode();
+        $this->nodeD = $this->createNode();
+        $this->nodeE = $this->createNode();
+        $this->nodeF = $this->createNode();
+        $this->nodeG = $this->createNode();
     }
 
     public function tearDown()
@@ -196,15 +196,33 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
         // It should throw a DisjointNodesException if the destination node is not on the same tree
         $this->setExpectedException('Goutte\\TreeBundle\\Exception\\DisjointNodesException');
-        $alienNode = $this->getNode();
-        $this->nodeA->getNodesAlongThePathTo($alienNode);
+        $this->nodeA->getNodesAlongThePathTo($this->createNode());
     }
 
+    /**
+     * We try to create a cycle by setting a descendant as parent
+     * @expectedException \Goutte\TreeBundle\Exception\CyclicReferenceException
+     */
+    public function testExceptionWhenSettingDescendantAsParent()
+    {
+        $this->setUpTestTree();
+        $this->nodeB->setParent($this->nodeD);
+    }
+
+    /**
+     * We try to create a cycle by adding an ancestor as child
+     * @expectedException \Goutte\TreeBundle\Exception\CyclicReferenceException
+     */
+    public function testExceptionWhenAddingAncestorAsChild()
+    {
+        $this->setUpTestTree();
+        $this->nodeG->addChild($this->nodeB);
+    }
 
     /**
      * @return Node
      */
-    protected function getNode()
+    protected function createNode()
     {
         return $this->getMockForAbstractClass('Goutte\TreeBundle\Model\Node');
     }

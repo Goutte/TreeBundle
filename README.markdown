@@ -1,7 +1,7 @@
 TreeBundle
 ==========
 
-Provides Node interface and abstract class for your tree-able models.
+Provides Node interface and abstract class for your rooted tree-able models.
 
 Also provides simple Drivers to import and export your Nodes from and to String representation,
 given their `value` is serializable.
@@ -89,13 +89,13 @@ v1.0
 - ~~DriverException~~
 - ~~isDescendantOf~~
 - ~~isAncestorOf~~
-- ~~Path finding : Node->getPathTo(Node):Node[]~~
+- ~~Path finding~~
+- Tree integrity tests on mutators
 - DIC for Drivers
-- Tree walking for Tree flattening
-- Tree consistency checker (validator?)
 
 v2.0
 ----
 
 - AsciiDriver for multiline ascii trees, structured as the commented tree in the Tests
-- Traits
+- Refactor Node into multiple Interfaces and Traits
+- Tree walking for Tree flattening
