@@ -32,6 +32,11 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->nodeG = $this->getNode();
     }
 
+    public function tearDown()
+    {
+        unset($this->nodeA,$this->nodeB,$this->nodeC,$this->nodeD,$this->nodeE,$this->nodeF,$this->nodeG);
+    }
+
     public function testIsRoot()
     {
         $this->assertTrue($this->nodeA->isRoot(), "It should initially be the root");
@@ -172,6 +177,24 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->nodeD->isAncestorOf($this->nodeE), "It should not be an ancestor of a sibling");
     }
 
+
+    /**
+     * @pending Implementation
+     */
+    public function testGetPathTo()
+    {
+        $this->setUpTestTree();
+
+        $expectedPath = array($this->nodeE, $this->nodeB, $this->nodeC);
+        $computedPath = $this->nodeE->getPathTo($this->nodeC);
+
+        $this->assertEquals($expectedPath, $computedPath, "It should find the shortest path to the specified node");
+
+        // Should the path start by $this node ?
+        // Maybe as an optional parameter $include_self ? Which default value, then ?
+
+        // It should throw a ~ForeignNodesException if the two nodes are not on the same tree
+    }
 
 
     /**

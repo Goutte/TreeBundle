@@ -88,9 +88,9 @@ v1.0
 - ~~DriverException~~
 - ~~isDescendantOf~~
 - ~~isAncestorOf~~
-- DIC for Factories and Drivers
-- Tree walking
-- Path finding : Node->findPathTo(Node):Node[]
+- DIC for Drivers
+- Path finding : Node->getPathTo(Node):Node[]
+- Tree walking for Tree flattening
 
 v2.0
 ----
