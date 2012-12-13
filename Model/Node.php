@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Model;
 
 use Goutte\TreeBundle\Is\Node as NodeInterface;
+use Goutte\TreeBundle\Exception\DisjointNodesException;
 use Goutte\TreeBundle\Exception\TreeIntegrityException;
 
 abstract class Node implements NodeInterface
@@ -136,6 +137,28 @@ abstract class Node implements NodeInterface
             return $this;
         } else {
             return $this->getParent()->getRoot();
+        }
+    }
+
+    /**
+     * May be insanely optimized performance-wise, i trust
+     * But i kinda like the simplicity of this
+     */
+    public function getNodesAlongThePathTo(NodeInterface $node)
+    {
+        if ($this === $node || $this->isParentOf($node) || $this->isChildOf($node)) {
+            return array();
+        }
+
+        if ($this->isAncestorOf($node)) {
+            return array_merge($this->getNodesAlongThePathTo($node->getParent()), array($node->getParent()));
+        } else {
+            if ($this->isRoot()) {
+                // i am root but not your ancestor and you're not me, we are not on the same tree then
+                throw new DisjointNodesException("Cannot build path between disjoint nodes.");
+            } else {
+                return array_merge(array($this->getParent()), $this->getParent()->getNodesAlongThePathTo($node));
+            }
         }
     }
 

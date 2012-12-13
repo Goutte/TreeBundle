@@ -17,6 +17,7 @@ class GoutteTreeExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
+        // duh ?
         $container->setParameter('goutte_tree.driver_type', $config['driver']);
 
         // fixme : do something with the configuration

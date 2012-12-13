@@ -194,7 +194,10 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->nodeD->getNodesAlongThePathTo($this->nodeG), "It should return an empty array if the destination node is adjacent (child)");
         $this->assertEquals(array(), $this->nodeF->getNodesAlongThePathTo($this->nodeA), "It should return an empty array if the destination node is adjacent (parent)");
 
-        // It should throw a ~ForeignNodesException if the destination node is not on the same tree
+        // It should throw a DisjointNodesException if the destination node is not on the same tree
+        $this->setExpectedException('Goutte\\TreeBundle\\Exception\\DisjointNodesException');
+        $alienNode = $this->getNode();
+        $this->nodeA->getNodesAlongThePathTo($alienNode);
     }
 
 

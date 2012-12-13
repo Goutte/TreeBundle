@@ -83,6 +83,12 @@ interface Node {
     public function getRoot();
 
     /**
+     * @param Node $node
+     * @return array
+     */
+    public function getNodesAlongThePathTo(Node $node);
+
+    /**
      * @return mixed
      */
     public function getValue();
