@@ -67,7 +67,8 @@ Extend `Goutte\TreeBundle\Factory\NodeFactory` as follows :
 Testing
 =======
 
-Run composer so that the autoloader is created
+Run composer with the `--dev` option so that the autoloader is created and the needed sf2 DIC classes are autoloaded.
+_Oddly enough, when I tried to install with `--test` and `require-test` in the `composer.json`, I was sent packing. (pun intended)_
 
     composer install --dev
 

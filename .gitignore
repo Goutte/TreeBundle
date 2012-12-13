@@ -12,3 +12,4 @@ phpunit.xml
 
 # Composer
 vendor/*
+composer.lock

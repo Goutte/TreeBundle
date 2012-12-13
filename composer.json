@@ -1,7 +1,7 @@
 {
   "name": "goutte/tree-bundle",
   "type": "symfony-bundle",
-  "description": "Goutte's TreeBundle",
+  "description": "Goutte's Tree Library",
   "keywords": ["Tree", "Node"],
   "homepage": "https://github.com/Goutte/TreeBundle",
   "license": "MIT",
@@ -13,6 +13,12 @@
   ],
   "require": {
     "php": ">=5.3.3"
+  },
+  "require-dev": {
+    "symfony/dependency-injection": ">=2.1,<2.3-dev"
+    ,"symfony/config": ">=2.1,<2.3-dev"
+    ,"symfony/yaml": ">=2.1,<2.3-dev"
+    ,"symfony/http-kernel": ">=2.1,<2.3-dev"
   },
   "autoload": {
     "psr-0": {
