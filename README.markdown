@@ -90,6 +90,7 @@ v1.0
 - ~~isAncestorOf~~
 - DIC for Factories and Drivers
 - Tree walking
+- Path finding : Node->findPathTo(Node):Node[]
 
 v2.0
 ----
