@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Model;
 
 use Goutte\TreeBundle\Is\Node as NodeInterface;
+use Goutte\TreeBundle\Exception\CyclicReferenceException;
 use Goutte\TreeBundle\Exception\DisjointNodesException;
 use Goutte\TreeBundle\Exception\TreeIntegrityException;
 
@@ -110,8 +111,16 @@ abstract class Node implements NodeInterface
         return $this->parent;
     }
 
-    public function setParent($node)
+    public function setParent($node, $careAboutIntegrity=true)
     {
+        if (null !== $node && ($this === $node || $this->isAncestorOf($node))) {
+            throw new CyclicReferenceException();
+        }
+
+        if ($careAboutIntegrity && !$this->isRoot()) {
+            $this->getParent()->removeChild($this);
+        }
+
         $this->parent = $node;
         if ($node && !$node->isParentOf($this)) {
             $node->addChild($this);
@@ -125,9 +134,24 @@ abstract class Node implements NodeInterface
 
     public function addChild(NodeInterface $node)
     {
+        if ($this === $node || $this->isDescendantOf($node)) {
+            throw new CyclicReferenceException();
+        }
+
         if (!$this->isParentOf($node)) {
+            if (!$node->isRoot()) {
+                $node->getParent()->removeChild($node);
+            }
             $this->children[] = $node; // first, or will l∞p
-            $node->setParent($this);
+            $node->setParent($this, false);
+        }
+    }
+
+    public function removeChild(NodeInterface $node) {
+        if ($this->isParentOf($node)) {
+            unset($this->children[array_search($node, $this->children, true)]);
+            $this->children = array_values($this->children);
+            $node->setParent(null, false);
         }
     }
 

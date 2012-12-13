@@ -90,7 +90,7 @@ v1.0
 - ~~isDescendantOf~~
 - ~~isAncestorOf~~
 - ~~Path finding~~
-- Tree integrity tests on mutators
+- ~~Tree integrity tests~~
 - DIC for Drivers
 
 v2.0

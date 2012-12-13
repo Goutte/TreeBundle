@@ -78,6 +78,11 @@ interface Node {
     public function addChild(Node $node);
 
     /**
+     * @param Node $node
+     */
+    public function removeChild(Node $node);
+
+    /**
      * @return Node
      */
     public function getRoot();

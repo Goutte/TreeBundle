@@ -3,6 +3,8 @@
 namespace Goutte\TreeBundle\Tests\Model;
 
 use Goutte\TreeBundle\Model\Node;
+use Goutte\TreeBundle\Exception\TreeIntegrityException;
+use Goutte\TreeBundle\Is\Node as NodeInterface;
 
 class NodeTest extends \PHPUnit_Framework_TestCase
 {
@@ -218,6 +220,41 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->setUpTestTree();
         $this->nodeG->addChild($this->nodeB);
     }
+
+    /**
+     * Testing the hierarchy mutators, they must not break the tree's integrity
+     * This is just to make sure the `children` and `parent` attributes stay consistent throughout the tree
+     */
+    public function testMovingNodesAroundAndKeepingIntegrity()
+    {
+        $this->setUpTestTree();
+
+        $this->nodeB->addChild($this->nodeG);
+        $this->nodeB->setParent($this->nodeF);
+        $this->nodeA->addChild($this->nodeE);
+        $this->nodeG->setParent($this->nodeE);
+
+        $this->assertSubTreeIntegrity($this->nodeA);
+    }
+
+
+    /**
+     * Asserts that the subtree rooted by the specified $node has integrity,
+     * meaning that any node's children have said node as parent
+     * @param NodeInterface $node
+     */
+    protected function assertSubTreeIntegrity(NodeInterface $node)
+    {
+        if (!$node->isLeaf()) {
+            foreach ($node->getChildren() as $childNode) {
+                if ($node !== $childNode->getParent()) {
+                    $this->fail("The integrity of the tree is violated.");
+                }
+                $this->assertSubTreeIntegrity($childNode);
+            }
+        }
+    }
+
 
     /**
      * @return Node
