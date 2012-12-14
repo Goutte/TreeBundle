@@ -3,13 +3,19 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="goutte_tree.driver.class">Goutte\TreeBundle\Driver\Parenthesis</parameter>
+        <parameter key="goutte_tree.node.class">Goutte\TreeBundle\Tests\Model\Node</parameter>
+        <parameter key="goutte_tree.serializer.class">Goutte\TreeBundle\Serializer\Serializer</parameter>
     </parameters>
 
     <services>
-        <!-- this is bullsh*t -->
-        <service id="goutte_tree.driver" class="Goutte\TreeBundle\Driver\Parenthesis">
-            <argument>%goutte_tree.driver.class%</argument>
+        <service id="goutte_tree.serializer" class="%goutte_tree.serializer.class%" />
+        <service id="goutte_tree.driver.parenthesis" class="Goutte\TreeBundle\Driver\Parenthesis">
+            <argument>%goutte_tree.node.class%</argument>
+            <tag name="goutte_tree.driver" />
+        </service>
+        <service id="goutte_tree.driver.timbre" class="Goutte\TreeBundle\Driver\Timbre">
+            <argument>%goutte_tree.node.class%</argument>
+            <tag name="goutte_tree.driver" />
         </service>
     </services>
 </container>

@@ -18,7 +18,7 @@ class GoutteTreeExtension extends Extension
         $loader->load('services.xml');
 
         // duh ?
-        $container->setParameter('goutte_tree.driver_type', $config['driver']);
+        //$container->setParameter('goutte_tree.driver_type', $config['driver']);
 
         // fixme : do something with the configuration
     }

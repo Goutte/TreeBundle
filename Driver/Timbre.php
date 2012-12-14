@@ -3,7 +3,7 @@
 namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Exception\DriverException;
-use Goutte\TreeBundle\Is\Driver;
+use Goutte\TreeBundle\Is\Driver as DriverInterface;
 use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\Node;
 
@@ -14,13 +14,13 @@ use Goutte\TreeBundle\Is\Node;
  * - Numeric values need to be encapsulated in T(), as in T("+",T(6),T(7)) instead of T("+",6,7)
  * - No spaces
  */
-class Timbre extends StringUtilsDriver implements Driver
+class Timbre extends StringUtilsDriver implements DriverInterface
 {
-    protected $factory;
+    protected $nodeClass;
 
-    public function __construct(NodeFactory $factory)
+    public function __construct($nodeClass)
     {
-        $this->factory = $factory;
+        $this->nodeClass = $nodeClass;
     }
 
     public function nodeToString(Node $node)
@@ -56,7 +56,7 @@ class Timbre extends StringUtilsDriver implements Driver
             $value = $matches[1];
             $children = $matches[2];
             /** @var $node Node */
-            $node = $this->factory->createNode();
+            $node = new $this->nodeClass;
             $node->setValue($value);
 
             foreach ($this->explode($children) as $childString)
@@ -68,4 +68,8 @@ class Timbre extends StringUtilsDriver implements Driver
         }
     }
 
+    public function getName()
+    {
+        return 'timbre';
+    }
 }

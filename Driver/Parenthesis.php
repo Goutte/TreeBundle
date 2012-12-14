@@ -3,7 +3,7 @@
 namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Exception\DriverException;
-use Goutte\TreeBundle\Is\Driver;
+use Goutte\TreeBundle\Is\Driver as DriverInterface;
 use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\Node;
 
@@ -13,13 +13,13 @@ use Goutte\TreeBundle\Is\Node;
  * Notes :
  * - No spaces
  */
-class Parenthesis extends StringUtilsDriver implements Driver
+class Parenthesis extends StringUtilsDriver implements DriverInterface
 {
-    protected $factory;
+    protected $nodeClass;
 
-    public function __construct(NodeFactory $factory)
+    public function __construct($nodeClass)
     {
-        $this->factory = $factory;
+        $this->nodeClass = $nodeClass;
     }
 
     public function nodeToString(Node $node)
@@ -46,7 +46,7 @@ class Parenthesis extends StringUtilsDriver implements Driver
             $value = $matches[1];
             $children = $matches[2];
             /** @var $node Node */
-            $node = $this->factory->createNode();
+            $node = new $this->nodeClass;
             $node->setValue($value);
 
             foreach ($this->explode($children) as $childString)
@@ -58,4 +58,8 @@ class Parenthesis extends StringUtilsDriver implements Driver
         }
     }
 
+    public function getName()
+    {
+        return 'parenthesis';
+    }
 }

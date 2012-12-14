@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Tests\DependencyInjection;
 
 use Goutte\TreeBundle\DependencyInjection\GoutteTreeExtension;
+use Goutte\TreeBundle\DependencyInjection\DriverCompilerPass;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,15 +15,54 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class GoutteTreeExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    public function testLoadEmptyConfiguration()
-    {
-        $container = $this->createContainer();
-        $container->registerExtension(new GoutteTreeExtension());
-        $container->loadFromExtension('goutte_tree', array());
-        $this->compileContainer($container);
 
-        $this->assertEquals('Goutte\TreeBundle\Driver\Parenthesis', $container->getParameter('goutte_tree.driver.class'), '->load() loads the services.xml file');
+    public function testSerializerService()
+    {
+        $container = $this->createCompiledContainer();
+
+        try {
+            /** @var $serializer \Goutte\TreeBundle\Serializer\Serializer */
+            $serializer = $container->get('goutte_tree.serializer');
+        } catch (\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException $e) {
+            $this->fail("The service goutte_tree.serializer should be available."); return;
+        }
+
+        $serializer->useDriver('parenthesis');
+
+        $testTree = 'Symfony(Http-Kernel(),Http-Foundation())';
+        $testNode = $serializer->toNode($testTree);
+        $this->assertEquals($testTree, $serializer->toString($testNode), "The parenthesis driver should be available");
+
+
+        $serializer->useDriver('timbre');
+
+        $testTree = 'T("*",T(6),T(9))';
+        $testNode = $serializer->toNode($testTree);
+        $this->assertEquals($testTree, $serializer->toString($testNode), "The timbre driver should be available");
     }
+
+
+//    public function testInadequateDriverClass()
+//    {
+//        $format = 'yml';
+//
+//        $container = $this->createContainer();
+//        $container->registerExtension(new GoutteTreeExtension());
+//        $this->loadFromFile($container, 'wrong_driver_class', $format);
+//        $this->compileContainer($container);
+//
+////        $driver = $container->get('goutte_tree.driver.class');
+//
+//    }
+
+//    public function testLoadEmptyConfiguration()
+//    {
+//        $container = $this->createCompiledContainer();
+//
+//        $this->assertEquals('Goutte\TreeBundle\Driver\Parenthesis', $container->getParameter('goutte_tree.driver.class'), '->load() loads the services.xml file');
+//    }
+
+
 
 //    /**
 //     * @dataProvider getFormats
@@ -132,6 +172,17 @@ class GoutteTreeExtensionTest extends \PHPUnit_Framework_TestCase
 //            array('xml'),
 //        );
 //    }
+
+    protected function createCompiledContainer()
+    {
+        $container = $this->createContainer();
+        $container->registerExtension(new GoutteTreeExtension());
+        $container->loadFromExtension('goutte_tree', array());
+        $container->addCompilerPass(new DriverCompilerPass());
+        $this->compileContainer($container);
+
+        return $container;
+    }
 
     private function createContainer()
     {

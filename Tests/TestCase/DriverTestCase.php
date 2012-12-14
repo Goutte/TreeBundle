@@ -10,7 +10,7 @@ abstract class DriverTestCase extends \PHPUnit_Framework_TestCase implements Dri
     public function setUp()
     {
         $this->driver = $this->getMockBuilder($this->getDriverClass())
-                             ->setConstructorArgs(array(new \Goutte\TreeBundle\Tests\Model\NodeFactory())) // how to mock here ? factory needs to create nodes !?!
+                             ->setConstructorArgs(array('Goutte\\TreeBundle\\Tests\\Model\\Node'))
                              ->getMockForAbstractClass();
     }
 

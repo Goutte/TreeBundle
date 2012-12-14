@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')
-                    ->defaultValue('')
+//                    ->defaultValue('')
 //                    ->info('The namespaced Driver class to use when converting a tree from and to a string. '
 //                          .'The Driver must implement Goutte\\TreeBundle\\Is\\Driver')
 //                    ->example('MyVendor\\MyBundle\\Driver\\MyAmazingDriver')
