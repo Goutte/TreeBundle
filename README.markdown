@@ -151,7 +151,7 @@ v1.0
 - ~~Tree integrity tests~~
 - ~~DIC for Drivers~~
 - ~~Documentation~~
-- Cleanup and refactoring
+- ~~Cleanup~~
 
 
 v2.0
