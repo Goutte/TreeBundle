@@ -67,9 +67,4 @@ class Timbre extends StringUtilsDriver implements DriverInterface
             return $node;
         }
     }
-
-    public function getName()
-    {
-        return 'timbre';
-    }
 }

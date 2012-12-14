@@ -27,15 +27,13 @@ class GoutteTreeExtensionTest extends \PHPUnit_Framework_TestCase
             $this->fail("The service goutte_tree.serializer should be available."); return;
         }
 
-        $serializer->useDriver('parenthesis');
-
+        // default driver is parenthesis
         $testTree = 'Symfony(Http-Kernel(),Http-Foundation())';
         $testNode = $serializer->toNode($testTree);
-        $this->assertEquals($testTree, $serializer->toString($testNode), "The parenthesis driver should be available");
+        $this->assertEquals($testTree, $serializer->toString($testNode), "The parenthesis driver should be available as default");
 
 
         $serializer->useDriver('timbre');
-
         $testTree = 'T("*",T(6),T(9))';
         $testNode = $serializer->toNode($testTree);
         $this->assertEquals($testTree, $serializer->toString($testNode), "The timbre driver should be available");

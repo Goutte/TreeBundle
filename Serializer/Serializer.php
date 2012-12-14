@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Serializer;
 
 use Goutte\TreeBundle\Exception\DriverException;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 use Goutte\TreeBundle\Is\Driver as DriverInterface;
 use Goutte\TreeBundle\Is\Node as NodeInterface;
@@ -28,21 +29,26 @@ class Serializer {
         $this->drivers = array();
     }
 
-    public function addDriver(DriverInterface $driver)
+    public function addDriver(DriverInterface $driver, $name, $default=false)
     {
-        $this->drivers[] = $driver;
+        if (!empty($this->drivers[$name])) {
+            throw new InvalidArgumentException("A driver with name '{$name}' is already registered.");
+        }
+
+        $this->drivers[$name] = $driver;
+
+        if ($default) {
+            $this->useDriver($name);
+        }
     }
 
     protected function findDriver($driverName)
     {
-        foreach ($this->drivers as $driver)
-        {
-            if ($driverName === $driver->getName()) {
-                return $driver;
-            }
+        if (empty($this->drivers[$driverName])) {
+            throw new DriverException("No driver named {$driverName} was found.");
         }
 
-        throw new DriverException("No driver named {$driverName} was found.");
+        return $this->drivers[$driverName];
     }
 
     public function useDriver($driverName)
@@ -55,7 +61,6 @@ class Serializer {
     public function getDriver()
     {
         if (null === $this->driver) {
-            // todo: first in the list ? default in config ??
             throw new DriverException("No driver currently used, please call ->useDriver('my_driver') first.");
         }
 

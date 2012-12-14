@@ -9,9 +9,10 @@
 
     <services>
         <service id="goutte_tree.serializer" class="%goutte_tree.serializer.class%" />
+
         <service id="goutte_tree.driver.parenthesis" class="Goutte\TreeBundle\Driver\Parenthesis">
             <argument>%goutte_tree.node.class%</argument>
-            <tag name="goutte_tree.driver" />
+            <tag name="goutte_tree.driver" default="true" />
         </service>
         <service id="goutte_tree.driver.timbre" class="Goutte\TreeBundle\Driver\Timbre">
             <argument>%goutte_tree.node.class%</argument>

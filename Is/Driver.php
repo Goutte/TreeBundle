@@ -8,5 +8,4 @@ interface Driver
 {
     public function nodeToString(Node $node);
     public function stringToNode($string);
-    public function getName();
 }

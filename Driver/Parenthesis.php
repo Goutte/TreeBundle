@@ -57,9 +57,4 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
             return $node;
         }
     }
-
-    public function getName()
-    {
-        return 'parenthesis';
-    }
 }
