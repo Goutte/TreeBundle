@@ -2,25 +2,25 @@
 
 namespace Goutte\TreeBundle\Tests\Model;
 
-use Goutte\TreeBundle\Model\Node;
+use Goutte\TreeBundle\Model\AbstractNode;
 use Goutte\TreeBundle\Exception\TreeIntegrityException;
 use Goutte\TreeBundle\Is\Node as NodeInterface;
 
 class NodeTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Node */
+    /** @var NodeInterface */
     protected $nodeA = null;
-    /** @var Node */
+    /** @var NodeInterface */
     protected $nodeB = null;
-    /** @var Node */
+    /** @var NodeInterface */
     protected $nodeC = null;
-    /** @var Node */
+    /** @var NodeInterface */
     protected $nodeD = null;
-    /** @var Node */
+    /** @var NodeInterface */
     protected $nodeE = null;
-    /** @var Node */
+    /** @var NodeInterface */
     protected $nodeF = null;
-    /** @var Node */
+    /** @var NodeInterface */
     protected $nodeG = null;
 
     public function setUp()
@@ -150,7 +150,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->setUpTestTree();
 
         foreach(array('B','C','D','E','F','G') as $nodeLetter) {
-            /** @var $node Node */
+            /** @var $node AbstractNode */
             $node = $this->{'node'.$nodeLetter};
             $this->assertTrue($node->isDescendantOf($this->nodeA), "All nodes but the root should be the descendant of the root");
         }
@@ -167,7 +167,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->setUpTestTree();
 
         foreach(array('B','C','D','E','F','G') as $nodeLetter) {
-            /** @var $node Node */
+            /** @var $node AbstractNode */
             $node = $this->{'node'.$nodeLetter};
             $this->assertTrue($this->nodeA->isAncestorOf($node), "The root should be the ancestor of all nodes but itself");
         }
@@ -257,11 +257,11 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @return Node
+     * @return AbstractNode
      */
     protected function createNode()
     {
-        return $this->getMockForAbstractClass('Goutte\TreeBundle\Model\Node');
+        return $this->getMockForAbstractClass('Goutte\TreeBundle\Model\AbstractNode');
     }
 }
 

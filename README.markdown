@@ -1,8 +1,7 @@
 TreeBundle
 ==========
 
-Provides a service for serializing and unserializing nodes,
-to and from strings such as `A(B(),C(D()))`.
+Provides a service for serializing and unserializing nodes, to and from strings such as `A(B(),C(D()))`.
 
 Drivers (dumb!) provided :
   - simple parenthesis : `A(B(),C(D()))`
@@ -10,15 +9,20 @@ Drivers (dumb!) provided :
 
 See the [Tests](https://github.com/Goutte/TreeBundle/tree/master/Driver) for more examples of what the Drivers support.
 
-Provides Node interface and abstract class for your rooted tree-able models.
-
-Also provides simple Drivers to import and export your Nodes from and to String representation,
-given their `value` is serializable.
-
+Also provides a Node interface and an abstract class for your models.
 
 
 How to Use
 ==========
+
+This is *not* for storing nested sets in the database, if that is what you are looking for you should be looking at
+[Doctrine Extensions](https://github.com/l3pp4rd/DoctrineExtensions).
+The original purpose of this bundle is to provide a toolset for reading/writing functional code.
+
+Feel free to extend it to suit your needs, though.
+
+Install
+-------
 
 Add this bundle to your project using composer
 
@@ -35,14 +39,14 @@ Use the service from the container :
     $serializer = $container->get('goutte_tree.serializer');
 
     // this will create the nodes and return the root node
-    $node = $serializer->toNode('root(childA(),childB(grandchild(C)))');
+    $rootNode = $serializer->toNode('root(childA(),childB(grandchild(C)))');
 
     // this will return the string for the subtree below the passed node
-    $string = $serializer->toString($node);
+    $string = $serializer->toString($rootNode); // returns 'root(childA(),childB(grandchild(C)))'
 ```
 
 
-See `Goutte\TreeBundle\Is\Node` for a list of the methods provided by the abstract class `Goutte\TreeBundle\Model\Node`.
+See `Goutte\TreeBundle\Is\Node` for a list of the methods provided by the abstract class `Goutte\TreeBundle\Model\AbstractNode`.
 
 
 Using your own Node
@@ -68,6 +72,8 @@ _This will be subject to heavy changes in the v2.0_
         // ...
     }
 ```
+
+Then, configure the service to use your own Node class.
 
 
 Writing a Driver
@@ -102,7 +108,7 @@ Configure the service to use your custom driver with `->useDriver()` :
     // ...
 ```
 
-You may skip usage of `->useDriver()` by telling the service to use your driver as default in the `service.xml` :
+You may skip usage of `->useDriver()` by telling the service to use your driver as default in the `services.xml` :
 
 ``` xml
     <tag name="goutte_tree.driver" default="true" />
@@ -144,12 +150,14 @@ v1.0
 - ~~Path finding~~
 - ~~Tree integrity tests~~
 - ~~DIC for Drivers~~
-- Documentation
+- ~~Documentation~~
 - Cleanup and refactoring
 
 
 v2.0
 ----
+
+_These have no timetable, don't wait for them_
 
 - AsciiDriver for multiline ascii trees, structured as the commented tree in the Tests
 - Refactor Node into multiple Interfaces and Traits

@@ -7,7 +7,7 @@ use Goutte\TreeBundle\Exception\CyclicReferenceException;
 use Goutte\TreeBundle\Exception\DisjointNodesException;
 use Goutte\TreeBundle\Exception\TreeIntegrityException;
 
-abstract class Node implements NodeInterface
+abstract class AbstractNode implements NodeInterface
 {
     /**
      * The parent Node, or null if this is the root
