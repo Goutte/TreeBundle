@@ -15,4 +15,10 @@ interface DriverTestCaseInterface
      * @return array[]
      */
     public function treeAsStringThatStaysTheSameProvider();
+
+    /**
+     * Provides two trees as string, the initial and the expected after a back and forth conversion to Node(s)
+     * @return array[]
+     */
+    public function treeAsStringThatConvertsInto();
 }

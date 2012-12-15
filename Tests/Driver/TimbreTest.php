@@ -12,6 +12,13 @@ class TimbreTest extends DriverTestCase
         return 'Goutte\TreeBundle\Driver\Timbre';
     }
 
+    public function treeAsStringThatConvertsInto()
+    {
+        return array(
+            array('T(0)','T(0)'),
+        );
+    }
+
     public function treeAsStringThatStaysTheSameProvider()
     {
         return array(

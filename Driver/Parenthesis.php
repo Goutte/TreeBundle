@@ -4,22 +4,38 @@ namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Exception\DriverException;
 use Goutte\TreeBundle\Is\Driver as DriverInterface;
-use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\Node;
 
 /**
- * Simple parenthesis driver, for strings like so: Root(ChildA(),ChildB(ChildBA(),ChildBB()))
+ * Smarter parenthesis driver, for strings like so: Root(ChildA,ChildB(ChildBA,ChildBB))
  *
  * Notes :
- * - No spaces
+ * - A node with no children will not have an empty parenthesis
+ * - Superfluous spaces will be trimmed
+ * - Special characters `(`, `)` and `,` in the values will be (un)escaped automatically
  */
 class Parenthesis extends StringUtilsDriver implements DriverInterface
 {
-    protected $nodeClass;
-
     public function __construct($nodeClass)
     {
         $this->nodeClass = $nodeClass;
+    }
+
+    protected function escapeValue(Node $node)
+    {
+        $s = (string) $node->getValue();
+        $s = str_replace('(','\(',$s);
+        $s = str_replace(')','\)',$s);
+        $s = str_replace(',','\,',$s);
+        return trim($s);
+    }
+
+    protected function unescapeValue($s)
+    {
+        $s = str_replace('\(','(',$s);
+        $s = str_replace('\)',')',$s);
+        $s = str_replace('\,',',',$s);
+        return trim($s);
     }
 
     public function nodeToString(Node $node)
@@ -29,10 +45,12 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
             $children[] = $this->nodeToString($child);
         }
 
-        $s = (string) $node->getValue();
-        $s .= '(';
-        $s .= implode(',',$children);
-        $s .= ')';
+        $s = $this->escapeValue($node);
+        if (!empty($children)) {
+            $s .= '(';
+            $s .= implode(',',$children);
+            $s .= ')';
+        }
 
         return $s;
     }
@@ -40,15 +58,15 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
     public function stringToNode($string)
     {
         $matches = array();
-        if (!preg_match("!^([^(]+)\((.*)\)$!", $string, $matches)) {
+        //echo "!^(?P<value>(?:".preg_quote('\(')."|[^(])+)(?:\((?P<children>.*)\))?$!";
+        if (!preg_match("!^(?P<value>(?:".preg_quote('\(')."|[^(])+)(?:\((?P<children>.*)\))?$!", $string, $matches)) {
             throw new DriverException("Cannot convert '{$string}' to node.");
         } else {
-            $value = $matches[1];
-            $children = $matches[2];
             /** @var $node Node */
             $node = new $this->nodeClass;
-            $node->setValue($value);
+            $node->setValue($this->unescapeValue($matches['value']));
 
+            $children = !empty($matches['children']) ? trim($matches['children']) : '';
             foreach ($this->explode($children) as $childString)
             {
                 $node->addChild($this->stringToNode($childString));

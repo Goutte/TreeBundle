@@ -29,6 +29,9 @@ class StringUtilsDriver
      * Explodes string using ',' as delimiter, but only get top-level elements, using parenthesis as encapsulation
      * Eg: a,b(c,d),e will return array("a", "b(c,d)", "e")
      *
+     * It ignores escaped parenthesis and commas
+     * Eg: a\,a,b\((c,d),e\) will return array("a\,a", "b\((c,d)", "e\)")
+     *
      * @param $string
      * @return array
      */
@@ -36,22 +39,27 @@ class StringUtilsDriver
     {
         $depth = 0;
         $positions = array();
+        $isEscaping = false;
 
         // find the indexes of the topmost delimiters
         for ($i = 0; $i < strlen($string); $i++) {
             switch ($string{$i}) {
+                case '\\':
+                    $isEscaping = !$isEscaping;
+                    break;
                 case '(':
-                    $depth++;
+                    if (!$isEscaping) $depth++;
                     break;
                 case ')':
-                    $depth--;
+                    if (!$isEscaping) $depth--;
                     break;
                 case ',':
-                    if (0 == $depth) {
+                    if (!$isEscaping && 0 == $depth) {
                         $positions[] = $i;
                     }
                     break;
             }
+            if ('\\' != $string{$i}) $isEscaping = false;
         }
 
         $array = array();

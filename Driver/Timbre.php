@@ -4,7 +4,6 @@ namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Exception\DriverException;
 use Goutte\TreeBundle\Is\Driver as DriverInterface;
-use Goutte\TreeBundle\Is\NodeFactory;
 use Goutte\TreeBundle\Is\Node;
 
 /**
@@ -16,8 +15,6 @@ use Goutte\TreeBundle\Is\Node;
  */
 class Timbre extends StringUtilsDriver implements DriverInterface
 {
-    protected $nodeClass;
-
     public function __construct($nodeClass)
     {
         $this->nodeClass = $nodeClass;

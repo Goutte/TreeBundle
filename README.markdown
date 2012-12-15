@@ -131,6 +131,16 @@ Then, simply run
 Pitfalls
 ========
 
+###Parenthesis Driver
+
+Nodes with empty value can convert to string, but not back to node.
+Eg: `A(B,C)` tree, if nodes' values are empty, will convert to `(,)`
+Solutions :
+  - throw on toString conversion if value is empty -> loss of feature
+  - Tweak the toNode regex to allow empty values -> disturbing as `A()` will create two nodes for example
+
+###Timbre Driver
+
 The nodes values are not escaped by the drivers (yet), so no `(`, `)` or `,`
 
 
@@ -153,12 +163,12 @@ v1.0
 - ~~Documentation~~
 - ~~Cleanup~~
 
-
 v2.0
 ----
 
 _These have no timetable, don't wait for them_
 
+- ~~Smarter parenthesis driver~~
 - AsciiDriver for multiline ascii trees, structured as the commented tree in the Tests
 - Refactor Node into multiple Interfaces and Traits
 - Tree walking for Tree flattening
