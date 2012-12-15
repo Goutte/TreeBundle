@@ -242,6 +242,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
     /**
      * Testing the hierarchy mutators, they must not break the tree's integrity
      * This is just to make sure the `children` and `parent` attributes stay consistent throughout the tree
+     * These are not tests that try to create cyclic references
      */
     public function testMovingNodesAroundAndKeepingIntegrity()
     {
@@ -272,7 +273,6 @@ class NodeTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
-
 
     /**
      * @return AbstractNode

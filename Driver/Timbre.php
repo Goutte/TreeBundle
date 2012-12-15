@@ -47,16 +47,14 @@ class Timbre extends StringUtilsDriver implements DriverInterface
     public function stringToNode($string)
     {
         $matches = array();
-        if (!preg_match('!^T\("?([^,"]+)"?,?(.*)\)$!', $string, $matches)) {
+        if (!preg_match('!^\s*T\s*\(\s*"?(?P<value>(?:[^,"])+)"?\s*,?\s*(?P<children>.*)\s*\)\s*$!s', $string, $matches)) {
             throw new DriverException("Cannot convert '{$string}' to node.");
         } else {
-            $value = $matches[1];
-            $children = $matches[2];
             /** @var $node Node */
             $node = new $this->nodeClass;
-            $node->setValue($value);
+            $node->setValue(trim($matches['value']));
 
-            foreach ($this->explode($children) as $childString)
+            foreach ($this->explode(trim($matches['children'])) as $childString)
             {
                 $node->addChild($this->stringToNode($childString));
             }

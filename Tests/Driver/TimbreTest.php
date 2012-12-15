@@ -15,7 +15,15 @@ class TimbreTest extends DriverTestCase
     public function treeAsStringThatConvertsInto()
     {
         return array(
-            array('T(0)','T(0)'),
+            array('T ("*", T(6), T( 9 ) )','T("*",T(6),T(9))'), // it should trim unnecessary spaces
+            array(<<<EOF
+T ("*",
+    T(6),
+    T(9)
+)
+EOF
+,'T("*",T(6),T(9))'), // it should understand multiline tree strings
+
         );
     }
 

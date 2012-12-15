@@ -135,16 +135,18 @@ Pitfalls
 
 Nodes with empty value can convert to string, but not back to node.
 
-Eg: `A(B,C)` tree, if nodes' values are empty, will convert to `(,)`
+Eg: `A(B,C)` tree, if nodes' values are emptied, will convert back to `(,)`
 
 Solutions :
-  - throw on toString conversion if value is empty -> loss of feature
+  - Throw on toString conversion if value is empty -> loss of feature
   - Tweak the toNode regex to allow empty values -> disturbing as `A()` will create two nodes for example
 
 ###Timbre Driver
 
-The nodes values are not escaped by the drivers (yet), so no `(`, `)` or `,`
+The nodes values are not escaped by the driver, so no `(`, `)` or `,`.
+As these characters are not used by Timbre's nodes, this should not be a problem.
 
+Numerical values must be encapsulated in `T()`, like so : `T(66.2)`.
 
 RoadMap
 =======
@@ -172,7 +174,7 @@ v2.0
 _These have no timetable, don't wait for them_
 
 - ~~Smarter parenthesis driver~~
-- Smarter timbre driver
+- ~~Smarter timbre driver~~
 - AsciiDriver for multiline ascii trees, structured as the commented tree in the Tests
 - Refactor Node into multiple Interfaces and Traits
 - Tree walking for Tree flattening

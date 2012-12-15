@@ -25,8 +25,8 @@ class DriverCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition(self::SERVICE_NAME);
         $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
 
-        foreach ($taggedServices as $id => $tagAttributes) {
-
+        foreach ($taggedServices as $id => $tagAttributes)
+        {
             $match = array();
             if (!preg_match("!^" . preg_quote(self::SERVICE_TAG . '.') . "(?P<alias>.+)$!", $id, $match)) {
                 throw new InvalidArgumentException(
@@ -35,8 +35,8 @@ class DriverCompilerPass implements CompilerPassInterface
                 );
             }
 
-            foreach ($tagAttributes as $attributes) {
-
+            foreach ($tagAttributes as $attributes)
+            {
                 $default = false;
                 if (!empty($attributes['default'])) {
                     $default = filter_var($attributes['default'], FILTER_VALIDATE_BOOLEAN);

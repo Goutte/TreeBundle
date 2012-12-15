@@ -58,8 +58,7 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
     public function stringToNode($string)
     {
         $matches = array();
-        //echo "!^(?P<value>(?:".preg_quote('\(')."|[^(])+)(?:\((?P<children>.*)\))?$!";
-        if (!preg_match("!^(?P<value>(?:".preg_quote('\(')."|[^(])+)(?:\((?P<children>.*)\))?$!", $string, $matches)) {
+        if (!preg_match("!^(?P<value>(?:\\\\\(|\\\\\)|[^(])+)(?:\((?P<children>.*)\))?$!", $string, $matches)) {
             throw new DriverException("Cannot convert '{$string}' to node.");
         } else {
             /** @var $node Node */

@@ -25,6 +25,7 @@ class StringUtilsDriver
         return true === $var || false === $var || 'true' === $var || 'false' === $var;
     }
 
+
     /**
      * Explodes string using ',' as delimiter, but only get top-level elements, using parenthesis as encapsulation
      * Eg: a,b(c,d),e will return array("a", "b(c,d)", "e")
