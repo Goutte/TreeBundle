@@ -33,13 +33,33 @@ EOF;
         $this->assertEquals($expected, $this->driver->nodeToString($nodeA), "It should properly convert to string");
     }
 
-    public function testEscaping()
+    public function testEscapingLinebreaksInValues()
+    {
+        $nodeA = $this->createNode("A");
+        $nodeB = $this->createNode("B\nBQ");
+
+        $nodeA->addChild($nodeB);
+
+        $expected = <<<EOF
+A
++--B\\nBQ
+EOF;
+
+        $actual = $this->driver->nodeToString($nodeA);
+
+        $this->assertEquals($expected, $actual, "It should properly escape linebreaks in values");
+
+        $node = $this->driver->stringToNode($actual);
+        $this->assertEquals("B\nBQ", $node->getFirstChild()->getValue(), "It should properly unescape linebreaks in values");
+    }
+
+    public function testReservedSymbolsInValues()
     {
         $treeString = <<<EOF
 +A
 +--B+
 |  +--+C+
-+---F
++---F|
 EOF;
 
         $node = $this->driver->stringToNode($treeString);
@@ -47,11 +67,11 @@ EOF;
         $this->assertEquals('+A', $node->getValue(), "It should get values starting with a +");
         $this->assertEquals('B+', $node->getFirstChild()->getValue(), "It should get values ending with a +");
         $this->assertEquals('+C+', $node->getFirstChild()->getFirstChild()->getValue(), "It should get values surrounded by +");
-        $this->assertEquals('-F', $node->getSecondChild()->getValue(), "It should get values starting with a -");
+        $this->assertEquals('-F|', $node->getSecondChild()->getValue(), "It should get values starting with a -");
     }
 
 
-    public function treeAsStringThatConvertsInto()
+    public function treeAsStringThatConvertsIntoProvider()
     {
         return array(
             array('A','A'),

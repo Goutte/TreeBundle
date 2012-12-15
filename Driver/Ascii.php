@@ -12,12 +12,17 @@ A
 +--B
 |  +--C
 |  +--D
-|  |  +--G
-|  +--E
+|     +--G
 +--F
 
 */
 
+/**
+ * Driver for Ascii trees like the one above
+ *
+ * Notes:
+ * - (un)escapes linebreaks in values
+ */
 class Ascii implements DriverInterface
 {
     public function __construct($nodeClass)
@@ -43,6 +48,10 @@ class Ascii implements DriverInterface
         return $this->stringArrayToNode($array);
     }
 
+    /**
+     * @param Node $node
+     * @return string[]
+     */
     public function nodeToStringArray(Node $node)
     {
         $children = array();
@@ -50,20 +59,20 @@ class Ascii implements DriverInterface
             $children[] = $this->nodeToStringArray($child);
         }
 
-        $s = array($node->getValue());
+        $array = array($this->escape($node->getValue()));
 
         if (empty($children)) {
-            return $s;
+            return $array;
         }
 
         // first 3 columns
         foreach ($children as $child) {
-            $s[] = '+--';
-            for ($i=0; $i<count($child)-1; $i++) {
+            $array[] = '+--';
+            for ($i = 0 ; $i < count($child)-1 ; $i++) {
                 if (1 < count($children)) {
-                    $s[] = '|  ';
+                    $array[] = '|  ';
                 } else {
-                    $s[] = '   ';
+                    $array[] = '   ';
                 }
             }
         }
@@ -71,24 +80,24 @@ class Ascii implements DriverInterface
         // children trees
         $j = 1;
         foreach ($children as $child) {
-            for ($i=0; $i<count($child); $i++) {
-                $s[$j++] .= $child[$i];
+            for ($i = 0 ; $i < count($child) ; $i++) {
+                $array[$j++] .= $child[$i];
             }
         }
 
-        return $s;
+        return $array;
     }
 
     /**
      * Creates root node of provided subtree, and recurse with children's arrays by removing the first 3 characters
-     * @param $array
-     * @return \Goutte\TreeBundle\Is\Node
+     * @param string[] $array
+     * @return Node
      */
     public function stringArrayToNode($array)
     {
         /** @var $node Node */
         $node = new $this->nodeClass;
-        $node->setValue(trim($array[0]));
+        $node->setValue($this->unescape($array[0]));
 
         $childArray = array();
         for ($i=1; $i<count($array); $i++) {
@@ -107,4 +116,19 @@ class Ascii implements DriverInterface
 
         return $node;
     }
+
+    protected function escape($string)
+    {
+        $linebreaks = array("\r\n","\r","\n");
+        $string = str_replace($linebreaks,'\n',$string);
+        return trim($string);
+    }
+
+    protected function unescape($string)
+    {
+        $string = str_replace('\n',"\n",$string);
+        return trim($string);
+    }
+
+
 }

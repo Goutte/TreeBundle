@@ -20,7 +20,7 @@ abstract class DriverTestCase extends \PHPUnit_Framework_TestCase implements Dri
      * Expects the provided tree structure as string to convert from $initialString to $expectedString
      * after a back and forth conversion to Node(s)
      *
-     * @dataProvider treeAsStringThatConvertsInto
+     * @dataProvider treeAsStringThatConvertsIntoProvider
      * @param $initialString
      * @param $expectedString
      */

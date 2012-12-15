@@ -40,7 +40,7 @@ class ParenthesisTest extends DriverTestCase
         $this->assertEquals('C',   $nodeC->getValue(), "It should unescape parenthesis and commas in the values");
     }
 
-    public function treeAsStringThatConvertsInto()
+    public function treeAsStringThatConvertsIntoProvider()
     {
         return array(
             array("Alone()", "Alone"), // it should remove unnecessary parenthesis

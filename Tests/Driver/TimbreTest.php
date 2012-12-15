@@ -12,17 +12,18 @@ class TimbreTest extends DriverTestCase
         return 'Goutte\TreeBundle\Driver\Timbre';
     }
 
-    public function treeAsStringThatConvertsInto()
+    public function treeAsStringThatConvertsIntoProvider()
     {
         return array(
             array('T ("*", T(6), T( 9 ) )','T("*",T(6),T(9))'), // it should trim unnecessary spaces
+            array("T(\"*\",\nT(6),\nT(9))",'T("*",T(6),T(9))'), // it should understand and trim multiline tree strings
             array(<<<EOF
 T ("*",
     T(6),
     T(9)
 )
 EOF
-,'T("*",T(6),T(9))'), // it should understand multiline tree strings
+,'T("*",T(6),T(9))'), // it should understand and trim multiline tree strings
 
         );
     }

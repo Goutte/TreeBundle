@@ -15,7 +15,7 @@ Drivers provided :
         |     +--E
         +--Fork
 
-See the [Tests](https://github.com/Goutte/TreeBundle/tree/master/Driver) for more examples of what the Drivers support.
+See the [Tests](https://github.com/Goutte/TreeBundle/tree/master/Tests/Driver) for more examples of what the Drivers support.
 
 Also provides a Node interface and an abstract class for your models.
 
@@ -25,7 +25,8 @@ How to Use
 
 This is *not* for storing nested sets in the database, if that is what you are looking for you should be looking at
 [Doctrine Extensions](https://github.com/l3pp4rd/DoctrineExtensions).
-The original purpose of this bundle is to provide a toolset for reading/writing functional code.
+The original purpose of this bundle is to provide a toolset for reading/writing functional code,
+or configuring the hierarchy of a menu in plain text for example.
 
 Feel free to extend it to suit your needs, though.
 
@@ -47,10 +48,18 @@ Use the service from the container :
     $serializer = $container->get('goutte_tree.serializer');
 
     // this will create the nodes and return the root node
-    $rootNode = $serializer->toNode('root(childA,childB(grandchild(C)))');
+    $rootNode = $serializer->toNode('root(childA,childB(grandchildC))');
 
     // this will return the string for the subtree below the passed node
-    $string = $serializer->toString($rootNode); // returns 'root(childA,childB(grandchild(C)))'
+    $string = $serializer->toString($rootNode); // returns 'root(childA,childB(grandchildC))'
+
+    // ... or use another driver
+    $string = $serializer->useDriver('ascii')->toString($rootNode);
+    // will return:
+    // root
+    // +--childA
+    // +--childB
+    //    +--grandchildC
 ```
 
 
@@ -103,10 +112,10 @@ Implement `Goutte\TreeBundle\Is\Driver` as follows :
 The `__construct` part is optional but is useful to get the Node class because the driver needs to create Nodes.
 If you omit it you must also omit the `<argument>` part in the service definition below.
 
-Add to your `services.xml` :
+Add your driver to your `services.xml`, and tag it `goutte_tree.driver` :
 
 ``` xml
-    <service id="goutte_tree.driver.mydriver" class="MyVendor\MyBundle\Driver\MyDriver">
+    <service id="goutte_tree.driver.mydriver" class="MyVendor\MyBundle\Driver\MyDriver" public="false">
         <argument>%goutte_tree.node.class%</argument>
         <tag name="goutte_tree.driver" />
     </service>
@@ -133,6 +142,8 @@ You may skip usage of `->useDriver()` by telling the service to use your driver 
 Testing
 =======
 
+This bundle is ruthlessly tested, except for some service configuration exceptions (if you know how to test these, I'm all ears!)
+
 Run composer with the `--dev` option so that the autoloader is created and the needed sf2 DIC classes are autoloaded.
 _Oddly enough, when I tried to install with `--test` and `require-test` in the `composer.json`, I was sent packing. (pun intended)_
 
@@ -146,9 +157,7 @@ Then, simply run
 Pitfalls
 ========
 
-The values must hold on a single line, or the drivers will get crazy. (fixme)
-
-###Parenthesis Driver
+### Parenthesis Driver
 
 Nodes with empty value can convert to string, but not back to node.
 
@@ -158,7 +167,7 @@ Solutions :
   - Throw on toString conversion if value is empty -> loss of feature
   - Tweak the toNode regex to allow empty values -> disturbing as `A()` will create two nodes for example
 
-###Timbre Driver
+### Timbre Driver
 
 The nodes values are not escaped by the driver, so no `(`, `)` or `,`.
 As these characters are not used by Timbre's nodes, this should not be a problem.
@@ -167,6 +176,8 @@ Numerical values must be encapsulated in `T()`, like so : `T(66.2)`.
 
 ### Ascii Driver
 
+Linebreaks will be (un)escaped so that values stay on one line in the string representation.
+
 Because the reader expects *exactly 2* `-` as indentation, the Node value will hold the extra `-` if you add more.
 
 Eg:
@@ -174,7 +185,7 @@ Eg:
     A
     +---B
 
-=> Node `B`'s value will be `-B`.
+=> The child node's value will be `-B`, not `B`.
 
 
 RoadMap
@@ -205,6 +216,21 @@ _These have no timetable, don't wait for them_
 - ~~Smarter parenthesis driver~~
 - ~~Smarter timbre driver~~
 - ~~AsciiDriver for multiline ascii trees~~
-- Test&Fix the multiline issue in values
+- ~~Test&Fix the multiline issue in values~~
 - Refactor Node into multiple Interfaces and Traits
 - Tree walking for Tree flattening
+
+
+Thoughts
+--------
+
+- Graph : provides: vertices/nodes
+- Tree : extends: Graph ; restricts: no simple cycles
+- Connected : provides: connections (edges)
+- Oriented : extends: Connected ; provides: parents and children (directed edges)
+- Rooted : extends: Oriented ; restricts: single parent
+- BinaryOperator: extends: Rooted ; restricts: two children
+
+Rooted Tree Node
+  - implements Connected, Oriented, Rooted ???
+  - traits ???

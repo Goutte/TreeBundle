@@ -21,23 +21,6 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
         $this->nodeClass = $nodeClass;
     }
 
-    protected function escapeValue(Node $node)
-    {
-        $s = (string) $node->getValue();
-        $s = str_replace('(','\(',$s);
-        $s = str_replace(')','\)',$s);
-        $s = str_replace(',','\,',$s);
-        return trim($s);
-    }
-
-    protected function unescapeValue($s)
-    {
-        $s = str_replace('\(','(',$s);
-        $s = str_replace('\)',')',$s);
-        $s = str_replace('\,',',',$s);
-        return trim($s);
-    }
-
     public function nodeToString(Node $node)
     {
         $children = array();
@@ -73,5 +56,22 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
 
             return $node;
         }
+    }
+
+    protected function escapeValue(Node $node)
+    {
+        $s = (string) $node->getValue();
+        $s = str_replace('(','\(',$s);
+        $s = str_replace(')','\)',$s);
+        $s = str_replace(',','\,',$s);
+        return trim($s);
+    }
+
+    protected function unescapeValue($s)
+    {
+        $s = str_replace('\(','(',$s);
+        $s = str_replace('\)',')',$s);
+        $s = str_replace('\,',',',$s);
+        return trim($s);
     }
 }
