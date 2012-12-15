@@ -84,9 +84,16 @@ Implement `Goutte\TreeBundle\Is\Driver` as follows :
 ``` php
     use Goutte\TreeBundle\Is\Driver;
     class MyDriver implements Driver {
+        public function __construct($nodeClass)
+        {
+            $this->nodeClass = $nodeClass;
+        }
         // ...
     }
 ```
+
+The `__construct` part is optional but is useful to get the Node class because the driver needs to create Nodes.
+If you omit it you must also omit the `<argument>` part in the service definition below.
 
 Add to your `services.xml` :
 
@@ -147,6 +154,11 @@ The nodes values are not escaped by the driver, so no `(`, `)` or `,`.
 As these characters are not used by Timbre's nodes, this should not be a problem.
 
 Numerical values must be encapsulated in `T()`, like so : `T(66.2)`.
+
+### Ascii Driver
+
+The nodes values must not start with `+`.
+
 
 RoadMap
 =======

@@ -12,29 +12,49 @@ class AsciiTest extends DriverTestCase
         return 'Goutte\TreeBundle\Driver\Ascii';
     }
 
+    public function testConvertToString()
+    {
+        $nodeA = $this->createNode('A');
+        $nodeB = $this->createNode('B');
+        $nodeC = $this->createNode('C');
+        $nodeD = $this->createNode('D');
+
+        $nodeA->addChild($nodeB);
+        $nodeA->addChild($nodeD);
+        $nodeB->addChild($nodeC);
+
+        $expected = <<<EOF
+A
++--B
+|  +--C
++--D
+EOF;
+
+        $this->assertEquals($expected, $this->driver->nodeToString($nodeA), "It should properly convert to string");
+    }
+
+    public function testEscaping()
+    {
+        $treeString = <<<EOF
++A
++--B+
+|  +--+C+
++--F--+-
+EOF;
+
+        $node = $this->driver->stringToNode($treeString);
+
+        $this->assertEquals('+A', $node->getValue(), "It should get values starting with a +");
+        $this->assertEquals('B+', $node->getFirstChild()->getValue(), "It should get values ending with a +");
+        $this->assertEquals('+C+', $node->getFirstChild()->getFirstChild()->getValue());
+        $this->assertEquals('F--+-', $node->getSecondChild()->getValue());
+    }
+
+
     public function treeAsStringThatConvertsInto()
     {
         return array(
-            array(<<<EOF
-A
-+--B
-|  +--C
-|  +--D
-|  |  +--G
-|  +--E
-+--F
-EOF
-,<<<EOF
-A
-+--B
-|  +--C
-|  +--D
-|  |  +--G
-|  +--E
-+--F
-EOF
-            ),
-
+            array('A','A'),
         );
     }
 
@@ -51,7 +71,20 @@ A
 |  +--E
 +--F
 EOF
-            ),
+            ), // it should work with complex trees
+            array(<<<EOF
+A
++--B
+   +--D
+      +--G
+EOF
+            ), // it should omit the | if there is only one child
+            array(<<<EOF
+Antoine
++--Bilbo
+   +--Corentin
+EOF
+            ), // it should work with trees with ~lenghtier values
         );
     }
 
