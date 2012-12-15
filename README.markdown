@@ -8,12 +8,12 @@ Drivers provided :
   - Simple (dumb!) [timbre](https://github.com/mohayonao/timbre) : `T("*",T(6),T("sin",T(55.2)))`
   - Ascii
 
-    A
-    +--B
-    |  +--C
-    |  +--D
-    |     +--E
-    +--Quebec
+        A
+        +--B
+        |  +--C
+        |  +--D
+        |     +--E
+        +--Fork
 
 See the [Tests](https://github.com/Goutte/TreeBundle/tree/master/Driver) for more examples of what the Drivers support.
 
