@@ -98,51 +98,69 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->nodeA->isParentOf($this->nodeA), "It should not be the parent of itself");
 
-        $this->assertTrue($this->nodeA->isParentOf($this->nodeB));
-        $this->assertTrue($this->nodeA->isParentOf($this->nodeF));
-        $this->assertFalse($this->nodeA->isParentOf($this->nodeC));
+        $this->assertTrue($this->nodeA->isParentOf($this->nodeB), "It should be the parent of a child");
+        $this->assertTrue($this->nodeD->isParentOf($this->nodeG), "It should be the parent of a child")
+        ;
+        $this->assertFalse($this->nodeA->isParentOf($this->nodeC), "It should not be the parent of a descendant that is not a child");
+        $this->assertFalse($this->nodeB->isParentOf($this->nodeA), "It should not be the parent of a parent");
+        $this->assertFalse($this->nodeD->isParentOf($this->nodeA), "It should not be the parent of an ancestor");
 
-        $this->assertTrue($this->nodeB->isParentOf($this->nodeC));
-        $this->assertTrue($this->nodeB->isParentOf($this->nodeD));
-        $this->assertFalse($this->nodeB->isParentOf($this->nodeG));
+        foreach(array('B','C','D','E','F','G') as $nodeLetter) {
+            /** @var $node AbstractNode */
+            $node = $this->{'node'.$nodeLetter};
+            $this->assertFalse($node->isParentOf($this->nodeA), "No one should be the parent of the root");
+        }
+    }
 
-        $this->assertTrue($this->nodeD->isParentOf($this->nodeG));
-        $this->assertFalse($this->nodeG->isParentOf($this->nodeA));
+    public function testGetChildren()
+    {
+        $this->setUpTestTree();
+
+        $this->assertEquals($this->nodeB, $this->nodeA->getFirstChild(), "->getFirstChild() should return the first child");
+        $this->assertEquals($this->nodeF, $this->nodeA->getSecondChild(), "->getSecondChild() should return the second child");
+        $this->assertNull($this->nodeA->getThirdChild(), "->getThirdChild() should return null when there is no third child");
+        $this->assertNull($this->nodeA->getFourthChild(), "->getFourthChild() should return null when there is no fourth child");
+        $this->assertNull($this->nodeA->getFifthChild(), "->getFifthChild() should return null when there is no fifth child");
+
+        $this->assertEquals($this->nodeE, $this->nodeB->getNthChild(3), "->getNthChild() should return the nth child");
+        $this->assertNull($this->nodeB->getNthChild(6), "->getNthChild() should return null when there is no nth child");
+
+        $this->assertEquals($this->nodeE, $this->nodeB->getLastChild(), "->getLastChild() should return the last child");
     }
 
     public function testGetPreviousSibling()
     {
         $this->setUpTestTree();
 
-        $this->assertEquals($this->nodeB, $this->nodeF->getPreviousSibling(), "It should return the previous sibling");
-        $this->assertNull($this->nodeB->getPreviousSibling(), "It should retourn null if there is no previous sibling");
+        $this->assertEquals($this->nodeB, $this->nodeF->getPreviousSibling(), "->getPreviousSibling() should return the previous sibling");
+        $this->assertNull($this->nodeB->getPreviousSibling(), "->getPreviousSibling() should retourn null if there is no previous sibling");
     }
 
     public function testGetNextSibling()
     {
         $this->setUpTestTree();
 
-        $this->assertEquals($this->nodeF, $this->nodeB->getNextSibling(), "It should return the next sibling");
-        $this->assertNull($this->nodeF->getNextSibling(), "It should retourn null if there is no next sibling");
+        $this->assertEquals($this->nodeF, $this->nodeB->getNextSibling(), "->getNextSibling() should return the next sibling");
+        $this->assertNull($this->nodeF->getNextSibling(), "->getNextSibling() should retourn null if there is no next sibling");
     }
 
     public function testGetParent()
     {
         $this->setUpTestTree();
 
-        $this->assertEquals($this->nodeA, $this->nodeB->getParent(), "It should return the direct parent");
-        $this->assertEquals($this->nodeD, $this->nodeG->getParent(), "It should return the direct parent");
+        $this->assertEquals($this->nodeA, $this->nodeB->getParent(), "->getParent() should return the direct parent");
+        $this->assertEquals($this->nodeD, $this->nodeG->getParent(), "->getParent() should return the direct parent");
 
-        $this->assertNull($this->nodeA->getParent(), "It should retourn null if it is the root node");
+        $this->assertNull($this->nodeA->getParent(), "->getParent() should retourn null if it is the root node");
     }
 
     public function testGetRoot()
     {
         $this->setUpTestTree();
 
-        $this->assertEquals($this->nodeA, $this->nodeA->getRoot(), "It should return itself if it is the root");
-        $this->assertEquals($this->nodeA, $this->nodeB->getRoot(), "It should return the root node");
-        $this->assertEquals($this->nodeA, $this->nodeG->getRoot(), "It should return the root node");
+        $this->assertEquals($this->nodeA, $this->nodeA->getRoot(), "->getRoot() should return the node itself when it is the root");
+        $this->assertEquals($this->nodeA, $this->nodeB->getRoot(), "->getRoot() should return the root node");
+        $this->assertEquals($this->nodeA, $this->nodeG->getRoot(), "->getRoot() should return the root node");
     }
 
     public function testIsDescendantOf()
@@ -190,13 +208,13 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $expectedPath = array($this->nodeB, $this->nodeD);
         $computedPath = $this->nodeE->getNodesAlongThePathTo($this->nodeG);
 
-        $this->assertEquals($expectedPath, $computedPath, "It should find the shortest path to the destination node");
+        $this->assertEquals($expectedPath, $computedPath, "->getNodesAlongThePathTo() should find the shortest path to the destination node");
 
-        $this->assertEquals(array(), $this->nodeD->getNodesAlongThePathTo($this->nodeD), "It should return an empty array if the destination node is itself");
-        $this->assertEquals(array(), $this->nodeD->getNodesAlongThePathTo($this->nodeG), "It should return an empty array if the destination node is adjacent (child)");
-        $this->assertEquals(array(), $this->nodeF->getNodesAlongThePathTo($this->nodeA), "It should return an empty array if the destination node is adjacent (parent)");
+        $this->assertEquals(array(), $this->nodeD->getNodesAlongThePathTo($this->nodeD), "->getNodesAlongThePathTo() should return an empty array if the destination node is the node itself");
+        $this->assertEquals(array(), $this->nodeD->getNodesAlongThePathTo($this->nodeG), "->getNodesAlongThePathTo() should return an empty array if the destination node is adjacent (a child)");
+        $this->assertEquals(array(), $this->nodeF->getNodesAlongThePathTo($this->nodeA), "->getNodesAlongThePathTo() should return an empty array if the destination node is adjacent (a parent)");
 
-        // It should throw a DisjointNodesException if the destination node is not on the same tree
+        // ->getNodesAlongThePathTo() should throw a DisjointNodesException if the destination node is not on the same tree
         $this->setExpectedException('Goutte\\TreeBundle\\Exception\\DisjointNodesException');
         $this->nodeA->getNodesAlongThePathTo($this->createNode());
     }

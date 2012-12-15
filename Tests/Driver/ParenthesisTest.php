@@ -36,8 +36,8 @@ class ParenthesisTest extends DriverTestCase
         $nodeC = $children[1];
 
         $this->assertEquals('A(A', $nodeA->getValue(), "It should unescape parenthesis in the values");
-        $this->assertEquals('B,', $nodeB->getValue(), "It should unescape commas in the values");
-        $this->assertEquals('C', $nodeC->getValue(), "It should unescape parenthesis and commas in the values");
+        $this->assertEquals('B,',  $nodeB->getValue(), "It should unescape commas in the values");
+        $this->assertEquals('C',   $nodeC->getValue(), "It should unescape parenthesis and commas in the values");
     }
 
     public function treeAsStringThatConvertsInto()

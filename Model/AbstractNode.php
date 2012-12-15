@@ -132,6 +132,46 @@ abstract class AbstractNode implements NodeInterface
         return $this->children;
     }
 
+    public function getNthChild($n)
+    {
+        return !empty($this->children[$n-1]) ? $this->children[$n-1] : null;
+    }
+
+    public function getFirstChild()
+    {
+        return $this->getNthChild(1);
+    }
+
+    public function getSecondChild()
+    {
+        return $this->getNthChild(2);
+    }
+
+    public function getThirdChild()
+    {
+        return $this->getNthChild(3);
+    }
+
+    public function getFourthChild()
+    {
+        return $this->getNthChild(4);
+    }
+
+    public function getFifthChild()
+    {
+        return $this->getNthChild(5);
+    }
+
+    public function getLastChild()
+    {
+        if ($this->isLeaf()) {
+            return null;
+        } else {
+            return $this->children[count($this->children)-1];
+        }
+    }
+
+
     public function addChild(NodeInterface $node)
     {
         if ($this === $node || $this->isDescendantOf($node)) {

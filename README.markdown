@@ -1,11 +1,11 @@
 TreeBundle
 ==========
 
-Provides a service for serializing and unserializing nodes, to and from strings such as `A(B(),C(D()))`.
+Provides a service for serializing and unserializing nodes, to and from strings such as `A(B,C(D))`.
 
-Drivers (dumb!) provided :
-  - simple parenthesis : `A(B(),C(D()))`
-  - simple (very!) [timbre](https://github.com/mohayonao/timbre) : `T("*",T(6),T("sin",T(55.2)))`
+Drivers provided :
+  - Parenthesis : `A(B,C(D))`
+  - Simple (dumb!) [timbre](https://github.com/mohayonao/timbre) : `T("*",T(6),T("sin",T(55.2)))`
 
 See the [Tests](https://github.com/Goutte/TreeBundle/tree/master/Driver) for more examples of what the Drivers support.
 
@@ -39,10 +39,10 @@ Use the service from the container :
     $serializer = $container->get('goutte_tree.serializer');
 
     // this will create the nodes and return the root node
-    $rootNode = $serializer->toNode('root(childA(),childB(grandchild(C)))');
+    $rootNode = $serializer->toNode('root(childA,childB(grandchild(C)))');
 
     // this will return the string for the subtree below the passed node
-    $string = $serializer->toString($rootNode); // returns 'root(childA(),childB(grandchild(C)))'
+    $string = $serializer->toString($rootNode); // returns 'root(childA,childB(grandchild(C)))'
 ```
 
 
@@ -97,15 +97,15 @@ Add to your `services.xml` :
     </service>
 ```
 
+**(warn)** The service id will define the driver alias, so it needs to start with `goutte_tree.driver.`.
+It is not the documented way of doing such a thing (which would be having an alias attribute in the tag), but it is a bit DRYer.
+This may be subject to change later, I'm still making up my mind.
+
 Configure the service to use your custom driver with `->useDriver()` :
 
 ``` php
-    // Get the service
-    $serializer = $container->get('goutte_tree.serializer');
-    // Tell it to use your driver
-    $serializer->useDriver('mydriver');
-
-    // ...
+    // Get the service, tell it to use your driver
+    $serializer = $container->get('goutte_tree.serializer')->useDriver('mydriver');
 ```
 
 You may skip usage of `->useDriver()` by telling the service to use your driver as default in the `services.xml` :
@@ -134,7 +134,9 @@ Pitfalls
 ###Parenthesis Driver
 
 Nodes with empty value can convert to string, but not back to node.
+
 Eg: `A(B,C)` tree, if nodes' values are empty, will convert to `(,)`
+
 Solutions :
   - throw on toString conversion if value is empty -> loss of feature
   - Tweak the toNode regex to allow empty values -> disturbing as `A()` will create two nodes for example
@@ -163,12 +165,14 @@ v1.0
 - ~~Documentation~~
 - ~~Cleanup~~
 
+
 v2.0
 ----
 
 _These have no timetable, don't wait for them_
 
 - ~~Smarter parenthesis driver~~
+- Smarter timbre driver
 - AsciiDriver for multiline ascii trees, structured as the commented tree in the Tests
 - Refactor Node into multiple Interfaces and Traits
 - Tree walking for Tree flattening

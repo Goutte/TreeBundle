@@ -73,6 +73,42 @@ interface Node {
     public function getChildren();
 
     /**
+     * @param $n
+     * @return Node|null
+     */
+    public function getNthChild($n);
+
+    /**
+     * @return Node|null
+     */
+    public function getFirstChild();
+
+    /**
+     * @return Node|null
+     */
+    public function getSecondChild();
+
+    /**
+     * @return Node|null
+     */
+    public function getThirdChild();
+
+    /**
+     * @return Node|null
+     */
+    public function getFourthChild();
+
+    /**
+     * @return Node|null
+     */
+    public function getFifthChild();
+
+    /**
+     * @return Node|null
+     */
+    public function getLastChild();
+
+    /**
      * @param Node $node
      */
     public function addChild(Node $node);

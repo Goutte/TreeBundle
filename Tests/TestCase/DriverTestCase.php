@@ -47,6 +47,7 @@ abstract class DriverTestCase extends \PHPUnit_Framework_TestCase implements Dri
     }
 
     /**
+     * @param string $value (optional) The value the node will hold
      * @return AbstractNode
      */
     protected function createNode($value=null)
