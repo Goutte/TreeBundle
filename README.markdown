@@ -6,6 +6,14 @@ Provides a service for serializing and unserializing nodes, to and from strings 
 Drivers provided :
   - Parenthesis : `A(B,C(D))`
   - Simple (dumb!) [timbre](https://github.com/mohayonao/timbre) : `T("*",T(6),T("sin",T(55.2)))`
+  - Ascii
+
+    A
+    +--B
+    |  +--C
+    |  +--D
+    |     +--E
+    +--Quebec
 
 See the [Tests](https://github.com/Goutte/TreeBundle/tree/master/Driver) for more examples of what the Drivers support.
 
@@ -138,6 +146,8 @@ Then, simply run
 Pitfalls
 ========
 
+The values must hold on a single line, or the drivers will get crazy. (fixme)
+
 ###Parenthesis Driver
 
 Nodes with empty value can convert to string, but not back to node.
@@ -194,6 +204,7 @@ _These have no timetable, don't wait for them_
 
 - ~~Smarter parenthesis driver~~
 - ~~Smarter timbre driver~~
-- AsciiDriver for multiline ascii trees, structured as the commented tree in the Tests
+- ~~AsciiDriver for multiline ascii trees~~
+- Test&Fix the multiline issue in values
 - Refactor Node into multiple Interfaces and Traits
 - Tree walking for Tree flattening
