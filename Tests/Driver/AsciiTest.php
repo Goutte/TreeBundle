@@ -39,15 +39,15 @@ EOF;
 +A
 +--B+
 |  +--+C+
-+--F--+-
++---F
 EOF;
 
         $node = $this->driver->stringToNode($treeString);
 
         $this->assertEquals('+A', $node->getValue(), "It should get values starting with a +");
         $this->assertEquals('B+', $node->getFirstChild()->getValue(), "It should get values ending with a +");
-        $this->assertEquals('+C+', $node->getFirstChild()->getFirstChild()->getValue());
-        $this->assertEquals('F--+-', $node->getSecondChild()->getValue());
+        $this->assertEquals('+C+', $node->getFirstChild()->getFirstChild()->getValue(), "It should get values surrounded by +");
+        $this->assertEquals('-F', $node->getSecondChild()->getValue(), "It should get values starting with a -");
     }
 
 

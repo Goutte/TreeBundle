@@ -157,7 +157,14 @@ Numerical values must be encapsulated in `T()`, like so : `T(66.2)`.
 
 ### Ascii Driver
 
-The nodes values must not start with `+`.
+Because the reader expects *exactly 2* `-` as indentation, the Node value will hold the extra `-` if you add more.
+
+Eg:
+
+    A
+    +---B
+
+=> Node `B`'s value will be `-B`.
 
 
 RoadMap
