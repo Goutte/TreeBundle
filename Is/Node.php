@@ -3,7 +3,7 @@
 namespace Goutte\TreeBundle\Is;
 
 /**
- * Look at Goutte\TreeBundle\Tests\Model\TestNode for a description of each method implementation
+ * Look at Goutte\TreeBundle\Model\AbstractNode for an implementation of these
  */
 interface Node {
 
@@ -46,6 +46,11 @@ interface Node {
      * @return bool
      */
     public function isParentOf(Node $node);
+
+    /**
+     * @return Node
+     */
+    public function getRoot();
 
     /**
      * @return Node|null
@@ -117,11 +122,6 @@ interface Node {
      * @param Node $node
      */
     public function removeChild(Node $node);
-
-    /**
-     * @return Node
-     */
-    public function getRoot();
 
     /**
      * @param Node $node

@@ -69,7 +69,7 @@ See `Goutte\TreeBundle\Is\Node` for a list of the methods provided by the abstra
 Using your own Node
 -------------------
 
-_This will be subject to heavy changes in the v2.0_
+_This will be subject to heavy changes in the v2.0, see the wip in the [trait branch](https://github.com/Goutte/TreeBundle/tree/traits)_
 
 ### Extending
 
@@ -163,7 +163,7 @@ Nodes with empty value can convert to string, but not back to node.
 
 Eg: `A(B,C)` tree, if nodes' values are emptied, will convert back to `(,)`
 
-Solutions :
+Envisioned solutions :
   - Throw on toString conversion if value is empty -> loss of feature
   - Tweak the toNode regex to allow empty values -> disturbing as `A()` will create two nodes for example
 
@@ -224,7 +224,7 @@ _These have no timetable, don't wait for them_
 BLACKBOARD
 ==========
 
-Some graph theory thoughts for refactorization, but I'm getting somewhat confused as to how implement them.
+Some graph theory thoughts for refactorization, but I'm getting somewhat confused as to how to implement them.
 
 
 

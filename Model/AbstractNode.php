@@ -7,6 +7,9 @@ use Goutte\TreeBundle\Exception\CyclicReferenceException;
 use Goutte\TreeBundle\Exception\DisjointNodesException;
 use Goutte\TreeBundle\Exception\TreeIntegrityException;
 
+/**
+ * Look at Goutte\TreeBundle\Tests\Model\TestNode for a description of each method implementation
+ */
 abstract class AbstractNode implements NodeInterface
 {
     /**
