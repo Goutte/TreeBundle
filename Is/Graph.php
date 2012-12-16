@@ -2,7 +2,8 @@
 
 namespace Goutte\TreeBundle\Is;
 
-interface Graph {
+interface Graph
+{
 
     public function getVertices();
 
