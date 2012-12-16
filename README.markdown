@@ -260,13 +260,14 @@ Edge
 Arc (has Direction)
   - getHead (child)
   - getTail (parent)
+
 => `/!\` confusing !
 
 also: has Weight, haz CheeseBurger
 
 
-Vertice
--------
+Vertex
+------
 
     Vertex < ConnectedVertex < TreeNode
     Vertex < ConnectedVertex < DirectedVertex < RootedTreeNode
