@@ -224,6 +224,9 @@ _These have no timetable, don't wait for them_
 BLACKBOARD
 ==========
 
+Some graph theory thoughts for refactorization, but I'm getting somewhat confused as to how implement them.
+
+
 
 Graph
 -----
@@ -254,7 +257,7 @@ Edge
 
 Edge < Arc
 
-Edge
+Edge (has Vertices)
   - getEndpoints (exactly 2)
 
 Arc (has Direction)
@@ -277,12 +280,13 @@ Vertex (has Label, has Graph)
   - get/set Label
 
 ConnectedVertex (has Edges)
-  - getEdges
-  - add/remove Edge
+  - use Edges
   - getAdjacent
   - countAdjacent = countEdges
 
 DirectedVertex (has Arcs)
+  - getArcs = getEdges
+  - add/remove Arc
   - getPredecessors
   - getDirectPredecessors
   - getSuccessors
@@ -290,7 +294,25 @@ DirectedVertex (has Arcs)
 
 TreeNode (has NoSimpleCycle)
 
-RootedTreeNode (has SingleDirectPredecessor or SingleParent)
+RootedTreeNode (has NoSimpleCycle, has SingleDirectPredecessor or SingleParent)
+  - use FamilyNotation
+  - use SingleParent
+  - use IsNotPartOfASimpleCycle
+
+
+Traits
+------
+
+### Vertex
+
+IsNotPartOfASimpleCycle
+  - addEdge (override and throw when cycle is detected)
+
+Edges
+  - getEdges
+  - add/remove Edge
+
+FamilyNotation
   - getChildren (direct successors)
   - add/remove Child
   - getNthChild
@@ -298,10 +320,25 @@ RootedTreeNode (has SingleDirectPredecessor or SingleParent)
   - getAncestors
   - getDescendants
 
-UnaryOperator > RootedTreeNode (has SingleChild or SingleDirectSuccessor)
+SingleParent
+  - addParent (override and keep unicity)
+  - setParent
 
-BinaryOperator > RootedTreeNode (has TwoChildren or TwoDirectSuccessors)
+SingleChild
+  - addChild (override and keep unicity)
+  - getChild
 
-TernaryOperator > RootedTreeNode (has ThreeChildren or ThreeDirectSuccessors)
 
-Operand > RootedTreeNode (has NoChild or NoDirectSuccessor)
+
+
+Rooted Tree Nodes
+-----------------
+
+UnaryOperator (has SingleChild or SingleDirectSuccessor)
+  - use SingleChild
+
+BinaryOperator (has TwoChildren or TwoDirectSuccessors)
+
+TernaryOperator (has ThreeChildren or ThreeDirectSuccessors)
+
+Operand (has NoChild or NoDirectSuccessor)
