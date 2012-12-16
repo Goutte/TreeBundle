@@ -66,10 +66,10 @@ class Ascii implements DriverInterface
         }
 
         // first 3 columns
-        foreach ($children as $child) {
+        foreach ($children as $kChild => $child) {
             $array[] = '+--';
             for ($i = 0 ; $i < count($child)-1 ; $i++) {
-                if (1 < count($children)) {
+                if ($kChild+1 < count($children)) {
                     $array[] = '|  ';
                 } else {
                     $array[] = '   ';

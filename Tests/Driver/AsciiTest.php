@@ -70,6 +70,25 @@ EOF;
         $this->assertEquals('-F|', $node->getSecondChild()->getValue(), "It should get values starting with a -");
     }
 
+    public function testGeneratingBigRandomTree()
+    {
+        $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $nodes = array();
+        for ($i=0 ; $i<26 ; $i++)
+        {
+            $char = chr(65 + mt_rand(0,25));
+            $char = $alphabet{$i%strlen($alphabet)};
+            $node = $this->createNode($char);
+            $nodes[] = $node;
+            if ($i > 0) $nodes[mt_rand(0,$i-1)]->addChild($node);
+        }
+
+        echo "Generating random tree :\n";
+        echo $this->driver->nodeToString($nodes[0]);
+
+        $this->assertTrue(true);
+    }
+
 
     public function treeAsStringThatConvertsIntoProvider()
     {
@@ -95,8 +114,9 @@ EOF
             array(<<<EOF
 A
 +--B
++--C
    +--D
-      +--G
+      +--E
 EOF
             ), // it should omit the | if there is only one child
             array(<<<EOF

@@ -8,13 +8,14 @@ namespace Goutte\TreeBundle\Is;
 interface Node {
 
     /**
-     * Am I the topmost/root node of the tree ?
+     * Am I the root node of the tree ?
      * @return bool
      */
     public function isRoot();
 
     /**
      * Am I a leaf in the tree ?
+     * Note: the root is not a leaf
      * @return bool
      */
     public function isLeaf();
@@ -48,36 +49,37 @@ interface Node {
     public function isParentOf(Node $node);
 
     /**
+     * Get the root node of the tree
      * @return Node
      */
     public function getRoot();
 
     /**
+     * Get my previous sibling, or null
      * @return Node|null
      */
     public function getPreviousSibling();
 
     /**
+     * Get ny next sibling, or null
      * @return Node|null
      */
     public function getNextSibling();
 
     /**
+     * Get my parent, or null if I am the root
      * @return Node|null
      */
     public function getParent();
 
     /**
-     * @param Node|null $node
-     */
-    public function setParent($node);
-
-    /**
+     * Get the children nodes as an array
      * @return Node[]
      */
     public function getChildren();
 
     /**
+     * Same as ->getChildren()[$n]
      * @param $n
      * @return Node|null
      */
@@ -109,27 +111,46 @@ interface Node {
     public function getFifthChild();
 
     /**
+     * Get the last of the children, or null if I am a leaf
      * @return Node|null
      */
     public function getLastChild();
 
     /**
+     * Changes my parent to the specified node
+     * Will move my whole subtree
+     * Will make me root of my own tree if specified $node is null
+     * @throws \Goutte\TreeBundle\Exception\CyclicReferenceException when a simple cycle is detected
+     * @param Node|null $node
+     */
+    public function setParent($node);
+
+    /**
+     * Adds specified node as child
+     * Will move the whole subtree of the child
+     * @throws \Goutte\TreeBundle\Exception\CyclicReferenceException when a simple cycle is detected
      * @param Node $node
      */
     public function addChild(Node $node);
 
     /**
+     * Removes the specified node from the children
+     * Specified node will then be the root of its own tree
      * @param Node $node
      */
     public function removeChild(Node $node);
 
     /**
+     * Get an array of the nodes along the path to the specified node,
+     * excluding this node and the specified node
+     * @throws \Goutte\TreeBundle\Exception\DisjointNodesException when path does not exist
      * @param Node $node
-     * @return array
+     * @return Node[]
      */
     public function getNodesAlongThePathTo(Node $node);
 
     /**
+     * The value should be castable as string
      * @return mixed
      */
     public function getValue();
