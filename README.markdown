@@ -221,16 +221,86 @@ _These have no timetable, don't wait for them_
 - Tree walking for Tree flattening
 
 
-Thoughts
---------
+BLACKBOARD
+==========
 
 - Graph : provides: vertices/nodes
 - Tree : extends: Graph ; restricts: no simple cycles
 - Connected : provides: connections (edges)
-- Oriented : extends: Connected ; provides: parents and children (directed edges)
-- Rooted : extends: Oriented ; restricts: single parent
+- Directed : extends: Connected ; provides: parents and children (directed edges = arcs)
+- Rooted : extends: Directed ; restricts: single parent
+- UnaryOperator: extends: Rooted ; restricts: one child
 - BinaryOperator: extends: Rooted ; restricts: two children
+- TernaryOperator: extends: Rooted ; restricts: three children
 
-Rooted Tree Node
-  - implements Connected, Oriented, Rooted ???
-  - traits ???
+Graph
+-----
+
+Graph < ConnectedGraph < Tree
+Graph < ConnectedGraph < DirectedGraph < RootedTree
+
+Graph (has Vertices)
+  - getVertices
+
+ConnectedGraph (has Edges)
+  - getLeaves
+  - getVerticesAlongPathTo(Vertex)
+
+Tree (has NoSimpleCycle)
+  - ?
+
+DirectedGraph (has Arcs)
+  - getSources
+  - getSinks
+
+RootedTree (has NoSimpleCycle)
+  - getRoot (single source)
+  - getLeaves = getSinks
+
+
+Edge
+----
+
+Edge < Arc
+
+Edge
+  - getEndpoints (exactly 2)
+
+Arc (has Direction)
+  - getHead
+  - getTail
+
+also: has Weight, haz CheezeBurger
+
+Vertice
+-------
+
+Vertex < ConnectedVertex < TreeNode
+Vertex < ConnectedVertex < DirectedVertex < RootedTreeNode
+
+Vertex (has Label, has Graph)
+  - get/set Graph
+  - get/set Label
+
+ConnectedVertex (has Edges)
+  - getEdges
+  - add/remove Edge
+  - getAdjacent
+  - countAdjacent = countEdges
+
+DirectedVertex (has Arcs)
+  - getPredecessors
+  - getDirectPredecessors
+  - getSuccessors
+  - getDirectSuccessors
+
+TreeNode
+  - ? (no simple cycles)
+
+RootedTreeNode (has SingleDirectPredecessor or SingleParent)
+  - getChildren (direct successors)
+  - add/remove Child
+  - getNthChild
+  - get/set Parent (single direct predecessor)
+  - getAncestors
+  - getDescendants
