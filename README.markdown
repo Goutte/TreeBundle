@@ -221,8 +221,8 @@ _These have no timetable, don't wait for them_
 - Tree walking for Tree flattening
 
 
-Thoughts
---------
+BLACKBOARD
+==========
 
 - Graph : provides: vertices/nodes
 - Tree : extends: Graph ; restricts: no simple cycles
@@ -233,34 +233,65 @@ Thoughts
 - BinaryOperator: extends: Rooted ; restricts: two children
 - TernaryOperator: extends: Rooted ; restricts: three children
 
-Rooted Tree Node
-  - implements Connected, Oriented, Rooted
-  - traits RootedTreeNode
+Graph
+-----
 
 Graph < ConnectedGraph < Tree
 Graph < ConnectedGraph < OrientedGraph < RootedTree
 
+Graph (has Vertices)
+  - getVertices
+
+ConnectedGraph (has Edges)
+  - getLeaves
+  - getVerticesAlongPathTo(Vertex)
+
+Tree (has NoSimpleCycle)
+  - ?
+
+
+
+Edge
+----
+
 Edge < Arc
 
-Vertice < ConnectedVertice < OrientedVertice < TreeNode
+Edge
+  - getEndpoints (exactly 2)
 
-Vertice (has Value, has Graph)
+Arc
+  - getHead
+  - getTail
+
+Vertice
+-------
+
+Vertex < ConnectedVertex < TreeNode
+Vertex < ConnectedVertex < OrientedVertex < RootedTreeNode
+
+Vertex (has Label, has Graph)
   - get/set Graph
-  - get/set Value
+  - get/set Label
 
-ConnectedVertice (has Edges)
+ConnectedVertex (has Edges)
   - getEdges
   - add/remove Edge
   - getAdjacent
   - countAdjacent = countEdges
 
-OrientedVertice (has Arcs)
-  - getChildren
+OrientedVertex (has Arcs)
+  - getPredecessors
+  - getDirectPredecessors
+  - getSuccessors
+  - getDirectSuccessors
+
+TreeNode
+  - ? (no simple cycles)
+
+RootedTreeNode (has SingleDirectPredecessor or SingleParent)
+  - getChildren (direct successors)
   - add/remove Child
   - getNthChild
-  - getParents
-  - add/remove Parent
-
-TreeNode (has SingleParent)
-  - getParent
-
+  - get/set Parent (direct predecessor)
+  - getAncestors
+  - getDescendants
