@@ -224,20 +224,12 @@ _These have no timetable, don't wait for them_
 BLACKBOARD
 ==========
 
-- Graph : provides: vertices/nodes
-- Tree : extends: Graph ; restricts: no simple cycles
-- Connected : provides: connections (edges)
-- Directed : extends: Connected ; provides: parents and children (directed edges = arcs)
-- Rooted : extends: Directed ; restricts: single parent
-- UnaryOperator: extends: Rooted ; restricts: one child
-- BinaryOperator: extends: Rooted ; restricts: two children
-- TernaryOperator: extends: Rooted ; restricts: three children
 
 Graph
 -----
 
-Graph < ConnectedGraph < Tree
-Graph < ConnectedGraph < DirectedGraph < RootedTree
+    Graph < ConnectedGraph < Tree
+    Graph < ConnectedGraph < DirectedGraph < RootedTree
 
 Graph (has Vertices)
   - getVertices
@@ -247,7 +239,6 @@ ConnectedGraph (has Edges)
   - getVerticesAlongPathTo(Vertex)
 
 Tree (has NoSimpleCycle)
-  - ?
 
 DirectedGraph (has Arcs)
   - getSources
@@ -267,16 +258,18 @@ Edge
   - getEndpoints (exactly 2)
 
 Arc (has Direction)
-  - getHead
-  - getTail
+  - getHead (child)
+  - getTail (parent)
+=> `/!\` confusing !
 
-also: has Weight, haz CheezeBurger
+also: has Weight, haz CheeseBurger
+
 
 Vertice
 -------
 
-Vertex < ConnectedVertex < TreeNode
-Vertex < ConnectedVertex < DirectedVertex < RootedTreeNode
+    Vertex < ConnectedVertex < TreeNode
+    Vertex < ConnectedVertex < DirectedVertex < RootedTreeNode
 
 Vertex (has Label, has Graph)
   - get/set Graph
@@ -294,8 +287,7 @@ DirectedVertex (has Arcs)
   - getSuccessors
   - getDirectSuccessors
 
-TreeNode
-  - ? (no simple cycles)
+TreeNode (has NoSimpleCycle)
 
 RootedTreeNode (has SingleDirectPredecessor or SingleParent)
   - getChildren (direct successors)
@@ -304,3 +296,11 @@ RootedTreeNode (has SingleDirectPredecessor or SingleParent)
   - get/set Parent (single direct predecessor)
   - getAncestors
   - getDescendants
+
+UnaryOperator > RootedTreeNode (has SingleChild or SingleDirectSuccessor)
+
+BinaryOperator > RootedTreeNode (has TwoChildren or TwoDirectSuccessors)
+
+TernaryOperator > RootedTreeNode (has ThreeChildren or ThreeDirectSuccessors)
+
+Operand > RootedTreeNode (has NoChild or NoDirectSuccessor)
