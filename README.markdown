@@ -227,10 +227,40 @@ Thoughts
 - Graph : provides: vertices/nodes
 - Tree : extends: Graph ; restricts: no simple cycles
 - Connected : provides: connections (edges)
-- Oriented : extends: Connected ; provides: parents and children (directed edges)
+- Oriented : extends: Connected ; provides: parents and children (directed edges = arcs)
 - Rooted : extends: Oriented ; restricts: single parent
+- UnaryOperator: extends: Rooted ; restricts: one child
 - BinaryOperator: extends: Rooted ; restricts: two children
+- TernaryOperator: extends: Rooted ; restricts: three children
 
 Rooted Tree Node
-  - implements Connected, Oriented, Rooted ???
-  - traits ???
+  - implements Connected, Oriented, Rooted
+  - traits RootedTreeNode
+
+Graph < ConnectedGraph < Tree
+Graph < ConnectedGraph < OrientedGraph < RootedTree
+
+Edge < Arc
+
+Vertice < ConnectedVertice < OrientedVertice < TreeNode
+
+Vertice (has Value, has Graph)
+  - get/set Graph
+  - get/set Value
+
+ConnectedVertice (has Edges)
+  - getEdges
+  - add/remove Edge
+  - getAdjacent
+  - countAdjacent = countEdges
+
+OrientedVertice (has Arcs)
+  - getChildren
+  - add/remove Child
+  - getNthChild
+  - getParents
+  - add/remove Parent
+
+TreeNode (has SingleParent)
+  - getParent
+
