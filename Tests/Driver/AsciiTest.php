@@ -74,9 +74,8 @@ EOF;
     {
         $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $nodes = array();
-        for ($i=0 ; $i<26 ; $i++)
+        for ($i=0 ; $i<strlen($alphabet) ; $i++)
         {
-            $char = chr(65 + mt_rand(0,25));
             $char = $alphabet{$i%strlen($alphabet)};
             $node = $this->createNode($char);
             $nodes[] = $node;
@@ -85,8 +84,6 @@ EOF;
 
         echo "Generating random tree :\n";
         echo $this->driver->nodeToString($nodes[0]);
-
-        $this->assertTrue(true);
     }
 
 
