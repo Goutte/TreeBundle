@@ -9,6 +9,7 @@ use Goutte\TreeBundle\Exception\TreeIntegrityException;
 
 /**
  * Look at Goutte\TreeBundle\Tests\Model\TestNode for a description of each method implementation
+ * Look at NodeInterface for comments
  */
 abstract class AbstractNode implements NodeInterface
 {
@@ -16,7 +17,7 @@ abstract class AbstractNode implements NodeInterface
      * The parent Node, or null if this is the root
      * @var NodeInterface
      */
-    protected $parent;
+    protected $parent = null;
 
     /**
      * The value held by the Node, may be pretty much anything (operator function, operand, etc.) but must be
@@ -34,10 +35,8 @@ abstract class AbstractNode implements NodeInterface
 
     function __construct()
     {
-        $this->parent = null;
         $this->children = array();
     }
-
 
     public function isRoot()
     {
@@ -64,10 +63,10 @@ abstract class AbstractNode implements NodeInterface
         if ($this->isChildOf($node)) {
             return true;
         } else {
-            if (!$this->isRoot()) {
-                return $this->getParent()->isDescendantOf($node);
-            } else {
+            if ($this->isRoot()) {
                 return false;
+            } else {
+                return $this->getParent()->isDescendantOf($node);
             }
         }
     }
@@ -75,6 +74,15 @@ abstract class AbstractNode implements NodeInterface
     public function isAncestorOf(NodeInterface $node)
     {
         return $node->isDescendantOf($this);
+    }
+
+    public function getRoot()
+    {
+        if ($this->isRoot()) {
+            return $this;
+        } else {
+            return $this->getParent()->getRoot();
+        }
     }
 
     public function getPreviousSibling()
@@ -195,15 +203,6 @@ abstract class AbstractNode implements NodeInterface
             unset($this->children[array_search($node, $this->children, true)]);
             $this->children = array_values($this->children);
             $node->setParent(null, false);
-        }
-    }
-
-    public function getRoot()
-    {
-        if ($this->isRoot()) {
-            return $this;
-        } else {
-            return $this->getParent()->getRoot();
         }
     }
 

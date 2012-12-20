@@ -118,8 +118,8 @@ interface Node {
 
     /**
      * Changes my parent to the specified node
-     * Will move my whole subtree
-     * Will make me root of my own tree if specified $node is null
+     * Should move my whole subtree
+     * Should make me root of my own tree if specified $node is null
      * @throws \Goutte\TreeBundle\Exception\CyclicReferenceException when a simple cycle is detected
      * @param Node|null $node
      */
@@ -127,7 +127,7 @@ interface Node {
 
     /**
      * Adds specified node as child
-     * Will move the whole subtree of the child
+     * Should move the whole subtree of the child
      * @throws \Goutte\TreeBundle\Exception\CyclicReferenceException when a simple cycle is detected
      * @param Node $node
      */
