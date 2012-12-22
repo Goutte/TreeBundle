@@ -38,6 +38,21 @@ abstract class AbstractNode implements NodeInterface
         $this->children = array();
     }
 
+    function __clone()
+    {
+        if (!empty($this->parent)) $this->parent = clone $this->parent;
+
+        foreach ($this->children as $kChild => $child) {
+            $this->children[$kChild] = clone $this->children[$kChild];
+        }
+    }
+
+    function __toString()
+    {
+        return $this->getValue();
+    }
+
+
     public function isRoot()
     {
         return (null === $this->parent);
