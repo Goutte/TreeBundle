@@ -46,7 +46,7 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
         } else {
             /** @var $node Node */
             $node = new $this->nodeClass;
-            $node->setValue($this->unescapeValue($matches['value']));
+            $node->setLabel($this->unescapeValue($matches['value']));
 
             $children = !empty($matches['children']) ? trim($matches['children']) : '';
             foreach ($this->explode($children) as $childString)
@@ -60,7 +60,7 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
 
     protected function escapeValue(Node $node)
     {
-        $s = (string) $node->getValue();
+        $s = (string) $node->getLabel();
         $s = str_replace('(','\(',$s);
         $s = str_replace(')','\)',$s);
         $s = str_replace(',','\,',$s);

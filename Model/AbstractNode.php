@@ -49,7 +49,7 @@ abstract class AbstractNode implements NodeInterface
 
     function __toString()
     {
-        return $this->getValue();
+        return $this->getLabel();
     }
 
 
@@ -243,12 +243,12 @@ abstract class AbstractNode implements NodeInterface
         }
     }
 
-    public function getValue()
+    public function getLabel()
     {
         return $this->value;
     }
 
-    public function setValue($value)
+    public function setLabel($value)
     {
         $this->value = $value;
     }

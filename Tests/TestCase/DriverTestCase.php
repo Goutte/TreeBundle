@@ -53,7 +53,7 @@ abstract class DriverTestCase extends \PHPUnit_Framework_TestCase implements Dri
     protected function createNode($value=null)
     {
         $mock = $this->getMockForAbstractClass('Goutte\TreeBundle\Model\AbstractNode');
-        if (null !== $value) $mock->setValue($value);
+        if (null !== $value) $mock->setLabel($value);
 
         return $mock;
     }

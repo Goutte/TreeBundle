@@ -47,10 +47,10 @@ EOF;
 
         $actual = $this->driver->nodeToString($nodeA);
 
-        $this->assertEquals($expected, $actual, "It should properly escape linebreaks in values");
+        $this->assertEquals($expected, $actual, "It should properly escape linebreaks in labels");
 
         $node = $this->driver->stringToNode($actual);
-        $this->assertEquals("B\nBQ", $node->getFirstChild()->getValue(), "It should properly unescape linebreaks in values");
+        $this->assertEquals("B\nBQ", $node->getFirstChild()->getLabel(), "It should properly unescape linebreaks in labels");
     }
 
     public function testReservedSymbolsInValues()
@@ -64,10 +64,10 @@ EOF;
 
         $node = $this->driver->stringToNode($treeString);
 
-        $this->assertEquals('+A', $node->getValue(), "It should get values starting with a +");
-        $this->assertEquals('B+', $node->getFirstChild()->getValue(), "It should get values ending with a +");
-        $this->assertEquals('+C+', $node->getFirstChild()->getFirstChild()->getValue(), "It should get values surrounded by +");
-        $this->assertEquals('-F|', $node->getSecondChild()->getValue(), "It should get values starting with a -");
+        $this->assertEquals('+A', $node->getLabel(), "It should get labels starting with a +");
+        $this->assertEquals('B+', $node->getFirstChild()->getLabel(), "It should get labels ending with a +");
+        $this->assertEquals('+C+', $node->getFirstChild()->getFirstChild()->getLabel(), "It should get labels surrounded by +");
+        $this->assertEquals('-F|', $node->getSecondChild()->getLabel(), "It should get labels starting with a -");
     }
 
     public function testGeneratingBigRandomTree()
@@ -121,7 +121,7 @@ Antoine
 +--Bilbo
    +--Corentin
 EOF
-            ), // it should work with trees with ~lenghtier values
+            ), // it should work with trees with ~lenghtier labels
         );
     }
 

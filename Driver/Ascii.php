@@ -59,7 +59,7 @@ class Ascii implements DriverInterface
             $children[] = $this->nodeToStringArray($child);
         }
 
-        $array = array($this->escape($node->getValue()));
+        $array = array($this->escape($node->getLabel()));
 
         if (empty($children)) {
             return $array;
@@ -97,7 +97,7 @@ class Ascii implements DriverInterface
     {
         /** @var $node Node */
         $node = new $this->nodeClass;
-        $node->setValue($this->unescape($array[0]));
+        $node->setLabel($this->unescape($array[0]));
 
         $childArray = array();
         for ($i=1; $i<count($array); $i++) {

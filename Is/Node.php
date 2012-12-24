@@ -150,14 +150,14 @@ interface Node {
     public function getNodesAlongThePathTo(Node $node);
 
     /**
-     * The value should be castable as string
+     * The label should be castable as string
      * @return mixed
      */
-    public function getValue();
+    public function getLabel();
 
     /**
      * @param $value
      */
-    public function setValue($value);
+    public function setLabel($value);
 
 }

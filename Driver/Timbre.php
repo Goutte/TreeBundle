@@ -27,7 +27,7 @@ class Timbre extends StringUtilsDriver implements DriverInterface
             $children[] = $this->nodeToString($child);
         }
 
-        $value = (string) $node->getValue();
+        $value = (string) $node->getLabel();
 
         if ($this->isNumeric($value) || $this->isBoolean($value)) {
             $s = "T({$value})";
@@ -52,7 +52,7 @@ class Timbre extends StringUtilsDriver implements DriverInterface
         } else {
             /** @var $node Node */
             $node = new $this->nodeClass;
-            $node->setValue(trim($matches['value']));
+            $node->setLabel(trim($matches['value']));
 
             foreach ($this->explode(trim($matches['children'])) as $childString)
             {
