@@ -246,7 +246,30 @@ abstract class AbstractNode implements NodeInterface
 
     public function replaceBy(NodeInterface $node)
     {
-        // todo
+        $parent = $this->getParent();
+        $children = $this->getChildren();
+
+        foreach ($children as $child)
+        {
+            $child->setParent($node);
+        }
+
+        $siblings = array();
+        foreach ($parent->getChildren() as $sibling)
+        {
+            if ($sibling === $this) {
+                $siblings[] = $node;
+            } else {
+                $siblings[] = $sibling;
+            }
+
+            $parent->removeChild($sibling);
+        }
+
+        foreach ($siblings as $sibling)
+        {
+            $parent->addChild($sibling);
+        }
     }
 
 
