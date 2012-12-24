@@ -25,13 +25,13 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->nodeA = $this->createNode();
-        $this->nodeB = $this->createNode();
-        $this->nodeC = $this->createNode();
-        $this->nodeD = $this->createNode();
-        $this->nodeE = $this->createNode();
-        $this->nodeF = $this->createNode();
-        $this->nodeG = $this->createNode();
+        $this->nodeA = $this->createNode('A');
+        $this->nodeB = $this->createNode('B');
+        $this->nodeC = $this->createNode('C');
+        $this->nodeD = $this->createNode('D');
+        $this->nodeE = $this->createNode('E');
+        $this->nodeF = $this->createNode('F');
+        $this->nodeG = $this->createNode('G');
     }
 
     public function tearDown()
@@ -197,10 +197,6 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->nodeD->isAncestorOf($this->nodeE), "It should not be an ancestor of a sibling");
     }
 
-
-    /**
-     * @pending Implementation
-     */
     public function testGetNodesAlongThePathTo()
     {
         $this->setUpTestTree();
@@ -217,6 +213,34 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         // ->getNodesAlongThePathTo() should throw a DisjointNodesException if the destination node is not on the same tree
         $this->setExpectedException('Goutte\\TreeBundle\\Exception\\DisjointNodesException');
         $this->nodeA->getNodesAlongThePathTo($this->createNode());
+    }
+
+    // A
+    // +--B
+    // |  +--C
+    // |  +--D
+    // |  |  +--G
+    // |  +--E
+    // +--F
+
+    public function testReplaceBy()
+    {
+        $this->setUpTestTree();
+
+        $nodeH = $this->createNode('H');
+        $this->nodeB->replaceBy($nodeH);
+
+        $this->assertEquals($nodeH, $this->nodeA->getFirstChild(), "It should replace the node from the parent point of view.");
+        $this->assertEquals($nodeH, $this->nodeC->getParent(), "It should replace the node from the children's point of view.");
+        $this->assertEquals($nodeH, $this->nodeD->getParent(), "It should replace the node from the children's point of view.");
+        $this->assertEquals($nodeH, $this->nodeE->getParent(), "It should replace the node from the children's point of view.");
+        $this->assertEquals(
+            array($this->nodeC,$this->nodeD,$this->nodeE),
+            $nodeH->getChildren(),
+            "It should give the children of the replaced node to the replacing node in the same order");
+
+        $this->assertTrue($this->nodeB->isRoot(), "It should make the replaced node a root");
+        $this->assertTrue($this->nodeB->isLeaf(), "It should make the replaced node a leaf");
     }
 
     /**
@@ -277,9 +301,11 @@ class NodeTest extends \PHPUnit_Framework_TestCase
     /**
      * @return AbstractNode
      */
-    protected function createNode()
+    protected function createNode($label='')
     {
-        return $this->getMockForAbstractClass('Goutte\TreeBundle\Model\AbstractNode');
+        $node = $this->getMockForAbstractClass('Goutte\TreeBundle\Model\AbstractNode');
+        $node->setLabel($label);
+        return $node;
     }
 }
 

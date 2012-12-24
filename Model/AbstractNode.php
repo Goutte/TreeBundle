@@ -243,6 +243,13 @@ abstract class AbstractNode implements NodeInterface
         }
     }
 
+
+    public function replaceBy(NodeInterface $node)
+    {
+        // todo
+    }
+
+
     public function getLabel()
     {
         return $this->value;

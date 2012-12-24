@@ -150,6 +150,15 @@ interface Node {
     public function getNodesAlongThePathTo(Node $node);
 
     /**
+     * Replace this node by the specified $node in the tree this node is in.
+     * This node will be all alone afterwards.
+     *
+     * @param Node $node
+     * @return mixed
+     */
+    public function replaceBy(Node $node);
+
+    /**
      * The label should be castable as string
      * @return mixed
      */
