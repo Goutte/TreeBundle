@@ -159,33 +159,33 @@ Pitfalls
 
 ### Parenthesis Driver
 
-Nodes with empty value can convert to string, but not back to node.
+Nodes with empty label can convert to string, but not back to node.
 
-Eg: `A(B,C)` tree, if nodes' values are emptied, will convert back to `(,)`
+Eg: `A(B,C)` tree, if nodes' labels are emptied, will convert back to `(,)`
 
 Envisioned solutions :
-  - Throw on toString conversion if value is empty -> loss of feature
-  - Tweak the toNode regex to allow empty values -> disturbing as `A()` will create two nodes for example
+  - Throw on toString conversion if label is empty -> loss of feature
+  - Tweak the toNode regex to allow empty labels -> disturbing as `A()` will create two nodes for example
 
 ### Timbre Driver
 
-The nodes values are not escaped by the driver, so no `(`, `)` or `,`.
+The nodes labels are not escaped by the driver, so no `(`, `)` or `,`.
 As these characters are not used by Timbre's nodes, this should not be a problem.
 
-Numerical values must be encapsulated in `T()`, like so : `T(66.2)`.
+Numerical labels must be encapsulated in `T()`, like so : `T(66.2)`.
 
 ### Ascii Driver
 
-Linebreaks will be (un)escaped so that values stay on one line in the string representation.
+Linebreaks will be (un)escaped so that labels stay on one line in the string representation.
 
-Because the reader expects *exactly 2* `-` as indentation, the Node value will hold the extra `-` if you add more.
+Because the reader expects *exactly 2* `-` as indentation, the Node label will hold the extra `-` if you add more.
 
 Eg:
 
     A
     +---B
 
-=> The child node's value will be `-B`, not `B`.
+=> The child node's label will be `-B`, not `B`.
 
 
 RoadMap
@@ -207,16 +207,20 @@ v1.0
 - ~~Documentation~~
 - ~~Cleanup~~
 
+v1.5
+----
+
+- ~~Smarter parenthesis driver~~
+- ~~Smarter timbre driver~~
+- ~~AsciiDriver for multiline ascii trees~~
+- ~~Test&Fix the multiline issue in labels~~
+- ~~Node replacement with ->replaceBy()~~
 
 v2.0
 ----
 
 _These have no timetable, don't wait for them_
 
-- ~~Smarter parenthesis driver~~
-- ~~Smarter timbre driver~~
-- ~~AsciiDriver for multiline ascii trees~~
-- ~~Test&Fix the multiline issue in values~~
 - Refactor Node into multiple Interfaces and Traits
 - Tree walking for Tree flattening
 

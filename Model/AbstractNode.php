@@ -40,7 +40,7 @@ abstract class AbstractNode implements NodeInterface
 
     function __clone()
     {
-        if (!empty($this->parent)) $this->parent = clone $this->parent;
+        //if (!empty($this->parent)) $this->parent = clone $this->parent;
 
         foreach ($this->children as $kChild => $child) {
             $this->children[$kChild] = clone $this->children[$kChild];
@@ -254,21 +254,23 @@ abstract class AbstractNode implements NodeInterface
             $child->setParent($node);
         }
 
-        $siblings = array();
-        foreach ($parent->getChildren() as $sibling)
-        {
-            if ($sibling === $this) {
-                $siblings[] = $node;
-            } else {
-                $siblings[] = $sibling;
+        if ($parent) {
+            $siblings = array();
+            foreach ($parent->getChildren() as $sibling)
+            {
+                if ($sibling === $this) {
+                    $siblings[] = $node;
+                } else {
+                    $siblings[] = $sibling;
+                }
+
+                $parent->removeChild($sibling);
             }
 
-            $parent->removeChild($sibling);
-        }
-
-        foreach ($siblings as $sibling)
-        {
-            $parent->addChild($sibling);
+            foreach ($siblings as $sibling)
+            {
+                $parent->addChild($sibling);
+            }
         }
     }
 
