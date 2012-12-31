@@ -216,6 +216,11 @@ v1.5
 - ~~Test&Fix the multiline issue in labels~~
 - ~~Node replacement with ->replaceBy()~~
 
+v1.6
+----
+
+- ~~Node cloning~~
+
 v2.0
 ----
 
