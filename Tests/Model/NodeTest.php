@@ -92,6 +92,28 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->nodeD->addChild($this->nodeG);
     }
 
+    public function testCloneTheRoot()
+    {
+        $this->setUpTestTree();
+
+        $clone = clone $this->nodeA;
+
+        $this->assertFalse($clone === $this->nodeA,
+            "It should create a new object");
+        $this->assertNull($clone->getParent(),
+            "It should create a new root");
+        $this->assertEquals($this->nodeA->getLabel(), $clone->getLabel(),
+            "It should clone the label");
+        $this->assertFalse($clone->getFirstChild() === $this->nodeA->getFirstChild(),
+            "It should clone the children too");
+        $this->assertEquals($clone->getFirstChild()->getLabel(), $this->nodeA->getFirstChild()->getLabel(),
+            "It should clone the first child's label");
+        $this->assertEquals($clone->getSecondChild()->getLabel(), $this->nodeA->getSecondChild()->getLabel(),
+            "It should clone the second child's label");
+
+        $this->assertTrue($clone === $clone->getFirstChild()->getParent(), "It should assign parentship properly");
+    }
+
     public function testIsParentOf()
     {
         $this->setUpTestTree();
@@ -299,6 +321,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $label Optional, the label of the newly created mock node
      * @return AbstractNode
      */
     protected function createNode($label='')

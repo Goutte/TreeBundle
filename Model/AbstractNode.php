@@ -40,10 +40,12 @@ abstract class AbstractNode implements NodeInterface
 
     function __clone()
     {
+        // Cloning will truncate the tree at the cloned node, making it the root
         //if (!empty($this->parent)) $this->parent = clone $this->parent;
 
         foreach ($this->children as $kChild => $child) {
             $this->children[$kChild] = clone $this->children[$kChild];
+            $this->children[$kChild]->setParent($this);
         }
     }
 
