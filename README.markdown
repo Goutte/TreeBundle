@@ -188,44 +188,64 @@ Eg:
 => The child node's label will be `-B`, not `B`.
 
 
-RoadMap
-=======
-
-By order of priority, feel free to *fork'n work* !
+ChangeLog
+=========
 
 
 v1.0
 ----
 
-- ~~TreeIntegrityException~~
-- ~~DriverException~~
-- ~~isDescendantOf~~
-- ~~isAncestorOf~~
-- ~~Path finding~~
-- ~~Tree integrity tests~~
-- ~~DIC for Drivers~~
-- ~~Documentation~~
-- ~~Cleanup~~
+- TreeIntegrityException
+- DriverException
+- Node base methods
+- Path finding
+- Tree integrity tests
+- DIC for Drivers
+- Documentation
+
 
 v1.5
 ----
 
-- ~~Smarter parenthesis driver~~
-- ~~Smarter timbre driver~~
-- ~~AsciiDriver for multiline ascii trees~~
-- ~~Test&Fix the multiline issue in labels~~
-- ~~Node replacement with ->replaceBy()~~
+- Parenthesis driver
+- Timbre driver
+- AsciiDriver for multiline ascii rooted trees
+- Node replacement with ->replaceBy()
+
 
 v1.6
 ----
 
-- ~~Node cloning~~
+- Node cloning
+
+
+v1.7.1
+------
+
+- ->getDescendants() (breadth-first TWA by default)
+- ->getRandomDescendant($includeSelf=false)
+
+
+
+
+RoadMap
+=======
+
+_These have no schedule, don't wait for them._
+
+
+v1.7.2
+------
+
+- ->getAncestors()
+- ->getRandomAncestor($includeSelf=false)
 
 v2.0
 ----
 
-_These have no timetable, don't wait for them_
-
-- Graph theory, see BLACKBOARD
-- Tree walking for Tree flattening
+- Empty labels in parenthesis driver
+- Graph theory, see the [BLACKBOARD](https://github.com/Goutte/TreeBundle/blob/master/BLACKBOARD.markdown)
+- Custom tree walking for tree flattening
+  - breadth-first
+  - depth-first
 

@@ -20,11 +20,11 @@ abstract class AbstractNode implements NodeInterface
     protected $parent = null;
 
     /**
-     * The value held by the Node, may be pretty much anything (operator function, operand, etc.) but must be
-     * "stringable" for some Drivers
+     * The value held by the Node, may be pretty much anything (operator function, operand, etc.)
+     * but must be "stringable" for some Drivers
      * @var mixed
      */
-    protected $value;
+    protected $label;
 
     /**
      * An array of Nodes that are the direct children of this Node
@@ -38,11 +38,12 @@ abstract class AbstractNode implements NodeInterface
         $this->children = array();
     }
 
+    /**
+     * Cloning will truncate the tree at the cloned node, making it the root.
+     * It will clone the children, though.
+     */
     function __clone()
     {
-        // Cloning will truncate the tree at the cloned node, making it the root
-        //if (!empty($this->parent)) $this->parent = clone $this->parent;
-
         foreach ($this->children as $kChild => $child) {
             $this->children[$kChild] = clone $this->children[$kChild];
             $this->children[$kChild]->setParent($this);
@@ -139,22 +140,6 @@ abstract class AbstractNode implements NodeInterface
         return $this->parent;
     }
 
-    public function setParent($node, $careAboutIntegrity=true)
-    {
-        if (null !== $node && ($this === $node || $this->isAncestorOf($node))) {
-            throw new CyclicReferenceException();
-        }
-
-        if ($careAboutIntegrity && !$this->isRoot()) {
-            $this->getParent()->removeChild($this);
-        }
-
-        $this->parent = $node;
-        if ($node && !$node->isParentOf($this)) {
-            $node->addChild($this);
-        }
-    }
-
     public function getChildren()
     {
         return $this->children;
@@ -196,6 +181,48 @@ abstract class AbstractNode implements NodeInterface
             return null;
         } else {
             return $this->children[count($this->children)-1];
+        }
+    }
+
+    public function getDescendants()
+    {
+        // todo: allow for customization of tree flattening
+        $descendants = $this->getChildren();
+        foreach ($this->getChildren() as $child) {
+            $descendants = array_merge($descendants, $child->getDescendants());
+        }
+
+        return $descendants;
+    }
+
+    public function getRandomDescendant($includeSelf=false)
+    {
+        $pool = $this->getDescendants();
+        if ($includeSelf) {
+            $pool = array_merge(array($this), $pool);
+        }
+
+        if (empty($pool)) {
+            return null;
+        } else {
+            $k = array_rand($pool);
+            return $pool[$k];
+        }
+    }
+
+    public function setParent($node, $careAboutIntegrity=true)
+    {
+        if (null !== $node && ($this === $node || $this->isAncestorOf($node))) {
+            throw new CyclicReferenceException();
+        }
+
+        if ($careAboutIntegrity && !$this->isRoot()) {
+            $this->getParent()->removeChild($this);
+        }
+
+        $this->parent = $node;
+        if ($node && !$node->isParentOf($this)) {
+            $node->addChild($this);
         }
     }
 
@@ -279,12 +306,12 @@ abstract class AbstractNode implements NodeInterface
 
     public function getLabel()
     {
-        return $this->value;
+        return $this->label;
     }
 
-    public function setLabel($value)
+    public function setLabel($label)
     {
-        $this->value = $value;
+        $this->label = $label;
     }
 
 }

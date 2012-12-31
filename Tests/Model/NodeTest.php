@@ -110,8 +110,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase
             "It should clone the first child's label");
         $this->assertEquals($clone->getSecondChild()->getLabel(), $this->nodeA->getSecondChild()->getLabel(),
             "It should clone the second child's label");
-
-        $this->assertTrue($clone === $clone->getFirstChild()->getParent(), "It should assign parentship properly");
+        $this->assertTrue($clone === $clone->getFirstChild()->getParent(),
+            "It should assign proper parentship to the children");
     }
 
     public function testIsParentOf()
@@ -148,6 +148,36 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->nodeB->getNthChild(6), "->getNthChild() should return null when there is no nth child");
 
         $this->assertEquals($this->nodeE, $this->nodeB->getLastChild(), "->getLastChild() should return the last child");
+    }
+
+    public function testGetDescendants()
+    {
+        $this->setUpTestTree();
+
+        $descendantNodesForA = array($this->nodeB,$this->nodeF,$this->nodeC,$this->nodeD,$this->nodeE,$this->nodeG);
+
+        $this->assertEquals($descendantNodesForA, $this->nodeA->getDescendants(),
+            "It should return all the descendants in the breadth-first order by default");
+        $this->assertEquals(array($this->nodeG), $this->nodeD->getDescendants(),
+            "It should return an array with one element if there is only one descendant");
+        $this->assertEquals(array(), $this->nodeG->getDescendants(),
+            "It should be an empty array if there are no descendants");
+    }
+
+    public function testGetRandomDescendant()
+    {
+        $this->setUpTestTree();
+
+        $allNodes = array($this->nodeA,$this->nodeB,$this->nodeC,$this->nodeD,$this->nodeE,$this->nodeF,$this->nodeG);
+
+        $this->assertContains($this->nodeA->getRandomDescendant(), $this->nodeA->getDescendants(),
+            "It should be one of the descendants");
+        $this->assertContains($this->nodeA->getRandomDescendant(true), $allNodes,
+            "It should be one of the descendants or root when \$includeSelf is true");
+        $this->assertNull($this->nodeG->getRandomDescendant(),
+            "It should be null if there are no descendants");
+        $this->assertEquals($this->nodeG, $this->nodeG->getRandomDescendant(true),
+            "It should be \$this if there are no descendants but \$includeSelf is true");
     }
 
     public function testGetPreviousSibling()
@@ -237,14 +267,6 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->nodeA->getNodesAlongThePathTo($this->createNode());
     }
 
-    // A
-    // +--B
-    // |  +--C
-    // |  +--D
-    // |  |  +--G
-    // |  +--E
-    // +--F
-
     public function testReplaceBy()
     {
         $this->setUpTestTree();
@@ -306,6 +328,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
     /**
      * Asserts that the subtree rooted by the specified $node has integrity,
      * meaning that any node's children have said node as parent
+     *
      * @param NodeInterface $node
      */
     protected function assertSubTreeIntegrity(NodeInterface $node)
