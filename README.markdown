@@ -225,6 +225,11 @@ v1.7.1
 - ->getDescendants() (breadth-first TWA by default)
 - ->getRandomDescendant($includeSelf=false)
 
+v1.7.2
+------
+
+- Decoupling the Random util for easier/deeper deteministic testing
+
 
 
 
@@ -234,7 +239,7 @@ RoadMap
 _These have no schedule, don't wait for them._
 
 
-v1.7.2
+v1.7.3
 ------
 
 - ->getAncestors()
