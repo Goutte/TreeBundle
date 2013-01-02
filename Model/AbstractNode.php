@@ -3,6 +3,8 @@
 namespace Goutte\TreeBundle\Model;
 
 use Goutte\TreeBundle\Is\Node as NodeInterface;
+use Goutte\TreeBundle\Util\Random;
+use Goutte\TreeBundle\Is\Random as RandomInterface;
 use Goutte\TreeBundle\Exception\CyclicReferenceException;
 use Goutte\TreeBundle\Exception\DisjointNodesException;
 use Goutte\TreeBundle\Exception\TreeIntegrityException;
@@ -24,13 +26,13 @@ abstract class AbstractNode implements NodeInterface
      * but must be "stringable" for some Drivers
      * @var mixed
      */
-    protected $label;
+    protected $label = '';
 
     /**
      * An array of Nodes that are the direct children of this Node
      * @var NodeInterface[]
      */
-    protected $children;
+    protected $children = array();
 
 
     function __construct()
@@ -195,7 +197,7 @@ abstract class AbstractNode implements NodeInterface
         return $descendants;
     }
 
-    public function getRandomDescendant($includeSelf=false)
+    public function getRandomDescendant($includeSelf=false, $random=null)
     {
         $pool = $this->getDescendants();
         if ($includeSelf) {
@@ -205,8 +207,13 @@ abstract class AbstractNode implements NodeInterface
         if (empty($pool)) {
             return null;
         } else {
-            $k = array_rand($pool);
-            return $pool[$k];
+            if (empty($random)) $random = new Random();
+            if ($random instanceof RandomInterface) {
+                return $random->pickArrayValue($pool);
+            } else {
+                trigger_error("The \$random parameter must be an instance of Goutte\\TreeBundle\\Is\\Random.", E_USER_ERROR);
+                return null;
+            }
         }
     }
 

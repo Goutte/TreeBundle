@@ -180,6 +180,22 @@ class NodeTest extends \PHPUnit_Framework_TestCase
             "It should be \$this if there are no descendants but \$includeSelf is true");
     }
 
+    public function testGetRandomDescendantWithCustomRandomGenerator()
+    {
+        $this->setUpTestTree();
+
+        $random = $this->getMock('Goutte\\TreeBundle\\Util\\Random');
+
+        $random->expects($this->any())
+               ->method('pickArrayValue')
+               ->will($this->returnValue($this->nodeB));
+
+        $this->assertEquals($this->nodeB, $this->nodeA->getRandomDescendant(false, $random),
+            "It should be the descendant chosen by the \$random parameter");
+        $this->assertEquals($this->nodeB, $this->nodeA->getRandomDescendant(true, $random),
+            "It should be the descendant chosen by the \$random parameter");
+    }
+
     public function testGetPreviousSibling()
     {
         $this->setUpTestTree();
@@ -278,10 +294,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($nodeH, $this->nodeC->getParent(), "It should replace the node from the children's point of view.");
         $this->assertEquals($nodeH, $this->nodeD->getParent(), "It should replace the node from the children's point of view.");
         $this->assertEquals($nodeH, $this->nodeE->getParent(), "It should replace the node from the children's point of view.");
-        $this->assertEquals(
-            array($this->nodeC,$this->nodeD,$this->nodeE),
-            $nodeH->getChildren(),
-            "It should give the children of the replaced node to the replacing node in the same order");
+        $this->assertEquals(array($this->nodeC,$this->nodeD,$this->nodeE), $nodeH->getChildren(),
+            "It should move the children of the replaced node to the replacing node, in the same order");
 
         $this->assertTrue($this->nodeB->isRoot(), "It should make the replaced node a root");
         $this->assertTrue($this->nodeB->isLeaf(), "It should make the replaced node a leaf");
