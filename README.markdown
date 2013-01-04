@@ -225,10 +225,11 @@ v1.7.1
 - ->getDescendants() (breadth-first TWA by default)
 - ->getRandomDescendant($includeSelf=false)
 
-v1.7.3
+v1.7.4
 ------
 
 - Decoupling the Random util for easier/deeper deteministic testing
+- ->removeChildren()
 
 
 
