@@ -197,7 +197,7 @@ abstract class AbstractNode implements NodeInterface
         return $descendants;
     }
 
-    public function getRandomDescendant($includeSelf=false, $random=null)
+    public function getRandomDescendant($includeSelf=false, RandomInterface $random=null)
     {
         $pool = $this->getDescendants();
         if ($includeSelf) {
@@ -208,12 +208,8 @@ abstract class AbstractNode implements NodeInterface
             return null;
         } else {
             if (empty($random)) $random = new Random();
-            if ($random instanceof RandomInterface) {
-                return $random->pickArrayValue($pool);
-            } else {
-                trigger_error("The \$random parameter must be an instance of Goutte\\TreeBundle\\Is\\Random.", E_USER_ERROR);
-                return null;
-            }
+
+            return $random->pickArrayValue($pool);
         }
     }
 
