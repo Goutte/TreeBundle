@@ -246,13 +246,24 @@ abstract class AbstractNode implements NodeInterface
         }
     }
 
-    public function removeChild(NodeInterface $node) {
+    public function removeChild(NodeInterface $node)
+    {
         if ($this->isParentOf($node)) {
             unset($this->children[array_search($node, $this->children, true)]);
             $this->children = array_values($this->children);
             $node->setParent(null, false);
         }
     }
+
+
+    public function removeChildren()
+    {
+        $children = $this->getChildren();
+        foreach ($children as $child) {
+            $this->removeChild($child);
+        }
+    }
+
 
     /**
      * May be insanely optimized performance-wise, i trust

@@ -173,6 +173,11 @@ interface Node {
     public function removeChild(Node $node);
 
     /**
+     * Removes all children of this node
+     */
+    public function removeChildren();
+
+    /**
      * Get an array of the nodes along the path to the specified node,
      * excluding this node and the specified node
      *

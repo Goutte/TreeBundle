@@ -301,6 +301,25 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->nodeB->isLeaf(), "It should make the replaced node a leaf");
     }
 
+
+    public function testRemovingChildren()
+    {
+        $this->setUpTestTree();
+
+        $this->nodeD->removeChild($this->nodeG);
+
+        $this->assertEmpty($this->nodeD->getChildren(), "It should remove the child");
+        $this->assertNull($this->nodeG->getParent(), "It should orphanize the removed child");
+
+        $this->nodeB->removeChildren();
+
+        $this->assertEmpty($this->nodeB->getChildren(), "It should remove all the children");
+        $this->assertNull($this->nodeC->getParent(), "It should orphanize the removed children");
+        $this->assertNull($this->nodeD->getParent(), "It should orphanize the removed children");
+        $this->assertNull($this->nodeE->getParent(), "It should orphanize the removed children");
+    }
+
+
     /**
      * We try to create a cycle by setting a descendant as parent
      * @expectedException \Goutte\TreeBundle\Exception\CyclicReferenceException
