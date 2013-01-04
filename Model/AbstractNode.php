@@ -186,7 +186,7 @@ abstract class AbstractNode implements NodeInterface
         }
     }
 
-    public function getDescendants()
+    public function getDescendants($includeSelf=false)
     {
         // todo: allow for customization of tree flattening
         $descendants = $this->getChildren();
@@ -194,15 +194,16 @@ abstract class AbstractNode implements NodeInterface
             $descendants = array_merge($descendants, $child->getDescendants());
         }
 
+        if ($includeSelf) {
+            $descendants = array_merge(array($this), $descendants);
+        }
+
         return $descendants;
     }
 
     public function getRandomDescendant($includeSelf=false, RandomInterface $random=null)
     {
-        $pool = $this->getDescendants();
-        if ($includeSelf) {
-            $pool = array_merge(array($this), $pool);
-        }
+        $pool = $this->getDescendants($includeSelf);
 
         if (empty($pool)) {
             return null;
