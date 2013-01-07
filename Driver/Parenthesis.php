@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Exception\DriverException;
+use Goutte\TreeBundle\Factory\NodeFactoryInterface;
 use Goutte\TreeBundle\Is\Driver as DriverInterface;
 use Goutte\TreeBundle\Is\Node;
 
@@ -16,9 +17,11 @@ use Goutte\TreeBundle\Is\Node;
  */
 class Parenthesis extends StringUtilsDriver implements DriverInterface
 {
-    public function __construct($nodeClass)
+    protected $factory;
+
+    public function __construct(NodeFactoryInterface $factory)
     {
-        $this->nodeClass = $nodeClass;
+        $this->factory = $factory;
     }
 
     public function nodeToString(Node $node)
@@ -44,9 +47,7 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
         if (!preg_match("!^(?P<value>(?:\\\\\(|\\\\\)|[^(])+)(?:\((?P<children>.*)\))?$!", $string, $matches)) {
             throw new DriverException("Cannot convert '{$string}' to node.");
         } else {
-            /** @var $node Node */
-            $node = new $this->nodeClass;
-            $node->setLabel($this->unescapeValue($matches['value']));
+            $node = $this->factory->createNodeFromLabel($this->unescapeValue($matches['value']));
 
             $children = !empty($matches['children']) ? trim($matches['children']) : '';
             foreach ($this->explode($children) as $childString)

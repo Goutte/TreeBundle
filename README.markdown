@@ -1,6 +1,8 @@
 TreeBundle
 ==========
 
+The Tree structure is currently designed with only one model, the [Node](https://github.com/Goutte/TreeBundle/blob/master/Model/AbstractNode.php).
+
 Provides a service for serializing and unserializing nodes, to and from strings such as `A(B,C(D))`.
 
 Drivers provided :
@@ -16,8 +18,6 @@ Drivers provided :
         +--Fork
 
 See the [Tests](https://github.com/Goutte/TreeBundle/tree/master/Tests/Driver) for more examples of what the Drivers support.
-
-Also provides a Node interface and an abstract class for your models.
 
 
 How to Use
@@ -69,7 +69,6 @@ See `Goutte\TreeBundle\Is\Node` for a list of the methods provided by the abstra
 Using your own Node
 -------------------
 
-_This will be subject to heavy changes in the v2.0, see the wip in the [trait branch](https://github.com/Goutte/TreeBundle/tree/traits)_
 
 ### Extending
 
@@ -100,23 +99,29 @@ Implement `Goutte\TreeBundle\Is\Driver` as follows :
 
 ``` php
     use Goutte\TreeBundle\Is\Driver;
-    class MyDriver implements Driver {
-        public function __construct($nodeClass)
+    use Goutte\TreeBundle\Factory\NodeFactoryInterface;
+
+    class MyDriver implements Driver
+    {
+        protected $factory
+
+        public function __construct(NodeFactoryInterface $factory)
         {
-            $this->nodeClass = $nodeClass;
+            $this->factory = $factory;
         }
-        // ...
+
+        // ... implement Driver
     }
 ```
 
-The `__construct` part is optional but is useful to get the Node class because the driver needs to create Nodes.
-If you omit it you must also omit the `<argument>` part in the service definition below.
+The `__construct` part is optional, but you'll probably want a NodeFactory to create Nodes.
+We provide a default Node Factory as service, see the `<argument>` in the service definition below.
 
 Add your driver to your `services.xml`, and tag it `goutte_tree.driver` :
 
 ``` xml
     <service id="goutte_tree.driver.mydriver" class="MyVendor\MyBundle\Driver\MyDriver" public="false">
-        <argument>%goutte_tree.node.class%</argument>
+        <argument type="service" id="goutte_tree.node.factory" />
         <tag name="goutte_tree.driver" />
     </service>
 ```
@@ -231,7 +236,10 @@ v1.7.4
 - Decoupling the Random util for easier/deeper deteministic testing
 - ->removeChildren()
 
+v1.7.5
+------
 
+- Usage of Factories in Drivers
 
 RoadMap
 =======
@@ -250,6 +258,7 @@ v2.0
 
 - Empty labels in parenthesis driver
 - Graph theory, see the [BLACKBOARD](https://github.com/Goutte/TreeBundle/blob/master/BLACKBOARD.markdown)
+  - -> probably in another bundle
 - Custom tree walking for tree flattening
   - breadth-first
   - depth-first

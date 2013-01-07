@@ -241,8 +241,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue($node->isDescendantOf($this->nodeA), "All nodes but the root should be the descendant of the root");
         }
 
-        $this->assertTrue($this->nodeB->isDescendantOf($this->nodeA), "It should be the descendant of its direct parent");
-        $this->assertTrue($this->nodeG->isDescendantOf($this->nodeB), "It should be the descendant of an ancestor");
+        $this->assertTrue($this->nodeB->isDescendantOf($this->nodeA),  "It should be the descendant of its direct parent");
+        $this->assertTrue($this->nodeG->isDescendantOf($this->nodeB),  "It should be the descendant of an ancestor");
         $this->assertFalse($this->nodeB->isDescendantOf($this->nodeB), "It should not be a descendant of itself");
         $this->assertFalse($this->nodeB->isDescendantOf($this->nodeC), "It should not be a descendant of a child");
         $this->assertFalse($this->nodeB->isDescendantOf($this->nodeF), "It should not be a descendant of a sibling");
@@ -258,8 +258,8 @@ class NodeTest extends \PHPUnit_Framework_TestCase
             $this->assertTrue($this->nodeA->isAncestorOf($node), "The root should be the ancestor of all nodes but itself");
         }
 
-        $this->assertTrue($this->nodeB->isAncestorOf($this->nodeC), "It should be the ancestor of its direct children");
-        $this->assertTrue($this->nodeB->isAncestorOf($this->nodeG), "It should be the ancestor of a descendant");
+        $this->assertTrue($this->nodeB->isAncestorOf($this->nodeC),  "It should be the ancestor of its direct children");
+        $this->assertTrue($this->nodeB->isAncestorOf($this->nodeG),  "It should be the ancestor of a descendant");
         $this->assertFalse($this->nodeB->isAncestorOf($this->nodeB), "It should not be an ancestor of itself");
         $this->assertFalse($this->nodeD->isAncestorOf($this->nodeB), "It should not be an ancestor of a parent");
         $this->assertFalse($this->nodeD->isAncestorOf($this->nodeE), "It should not be an ancestor of a sibling");
@@ -309,14 +309,14 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $this->nodeD->removeChild($this->nodeG);
 
         $this->assertEmpty($this->nodeD->getChildren(), "It should remove the child");
-        $this->assertNull($this->nodeG->getParent(), "It should orphanize the removed child");
+        $this->assertNull($this->nodeG->getParent(),    "It should orphanize the removed child");
 
         $this->nodeB->removeChildren();
 
         $this->assertEmpty($this->nodeB->getChildren(), "It should remove all the children");
-        $this->assertNull($this->nodeC->getParent(), "It should orphanize the removed children");
-        $this->assertNull($this->nodeD->getParent(), "It should orphanize the removed children");
-        $this->assertNull($this->nodeE->getParent(), "It should orphanize the removed children");
+        $this->assertNull($this->nodeC->getParent(),    "It should orphanize the removed children");
+        $this->assertNull($this->nodeD->getParent(),    "It should orphanize the removed children");
+        $this->assertNull($this->nodeE->getParent(),    "It should orphanize the removed children");
     }
 
 

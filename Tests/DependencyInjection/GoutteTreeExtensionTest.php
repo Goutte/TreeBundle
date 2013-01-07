@@ -35,6 +35,17 @@ class GoutteTreeExtensionTest extends \PHPUnit_Framework_TestCase
         $testTree = 'T("*",T(6),T(9))';
         $testNode = $serializer->toNode($testTree);
         $this->assertEquals($testTree, $serializer->toString($testNode), "The timbre driver should be available");
+
+        $serializer->useDriver('ascii');
+        $testTree = <<<EOF
+mul
++--0.25
++--sin
+   +--564.12
+EOF;
+
+        $testNode = $serializer->toNode($testTree);
+        $this->assertEquals($testTree, $serializer->toString($testNode), "The ascii driver should be available");
     }
 
 
@@ -200,24 +211,25 @@ class GoutteTreeExtensionTest extends \PHPUnit_Framework_TestCase
         $container->compile();
     }
 
-    private function loadFromFile(ContainerBuilder $container, $file, $format)
-    {
-        $locator = new FileLocator(__DIR__.'/Fixtures/'.$format);
-
-        switch ($format) {
+//    private function loadFromFile(ContainerBuilder $container, $file, $format)
+//    {
+//        $locator = new FileLocator(__DIR__.'/Fixtures/'.$format);
+//
+//        switch ($format) {
 //            case 'php':
 //                $loader = new PhpFileLoader($container, $locator);
 //                break;
 //            case 'xml':
 //                $loader = new XmlFileLoader($container, $locator);
 //                break;
-            case 'yml':
-                $loader = new YamlFileLoader($container, $locator);
-                break;
-            default:
-                throw new \InvalidArgumentException('Unsupported format: '.$format);
-        }
+//            case 'yml':
+//                $loader = new YamlFileLoader($container, $locator);
+//                break;
+//            default:
+//                throw new \InvalidArgumentException('Unsupported format: '.$format);
+//        }
+//
+//        $loader->load($file.'.'.$format);
+//    }
 
-        $loader->load($file.'.'.$format);
-    }
 }

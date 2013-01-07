@@ -4,18 +4,27 @@
 
     <parameters>
         <parameter key="goutte_tree.node.class">Goutte\TreeBundle\Model\Node</parameter>
+        <parameter key="goutte_tree.node.factory.class">Goutte\TreeBundle\Factory\DefaultNodeFactory</parameter>
         <parameter key="goutte_tree.serializer.class">Goutte\TreeBundle\Serializer\Serializer</parameter>
     </parameters>
 
     <services>
         <service id="goutte_tree.serializer" class="%goutte_tree.serializer.class%" />
 
-        <service id="goutte_tree.driver.parenthesis" class="Goutte\TreeBundle\Driver\Parenthesis">
+        <service id="goutte_tree.node.factory" class="%goutte_tree.node.factory.class%" public="false">
             <argument>%goutte_tree.node.class%</argument>
+        </service>
+
+        <service id="goutte_tree.driver.parenthesis" class="Goutte\TreeBundle\Driver\Parenthesis" public="false">
+            <argument type="service" id="goutte_tree.node.factory" />
             <tag name="goutte_tree.driver" default="true" />
         </service>
-        <service id="goutte_tree.driver.timbre" class="Goutte\TreeBundle\Driver\Timbre">
-            <argument>%goutte_tree.node.class%</argument>
+        <service id="goutte_tree.driver.ascii" class="Goutte\TreeBundle\Driver\Ascii" public="false">
+            <argument type="service" id="goutte_tree.node.factory" />
+            <tag name="goutte_tree.driver" />
+        </service>
+        <service id="goutte_tree.driver.timbre" class="Goutte\TreeBundle\Driver\Timbre" public="false">
+            <argument type="service" id="goutte_tree.node.factory" />
             <tag name="goutte_tree.driver" />
         </service>
     </services>

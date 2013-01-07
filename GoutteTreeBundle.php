@@ -12,6 +12,7 @@ class GoutteTreeBundle extends Bundle
     {
         parent::build($container);
 
+        // Check for custom drivers in services
         $container->addCompilerPass(new DriverCompilerPass());
     }
 }

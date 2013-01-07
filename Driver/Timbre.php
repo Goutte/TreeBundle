@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Exception\DriverException;
+use Goutte\TreeBundle\Factory\NodeFactoryInterface;
 use Goutte\TreeBundle\Is\Driver as DriverInterface;
 use Goutte\TreeBundle\Is\Node;
 
@@ -15,9 +16,11 @@ use Goutte\TreeBundle\Is\Node;
  */
 class Timbre extends StringUtilsDriver implements DriverInterface
 {
-    public function __construct($nodeClass)
+    protected $factory;
+
+    public function __construct(NodeFactoryInterface $factory)
     {
-        $this->nodeClass = $nodeClass;
+        $this->factory = $factory;
     }
 
     public function nodeToString(Node $node)
@@ -50,9 +53,7 @@ class Timbre extends StringUtilsDriver implements DriverInterface
         if (!preg_match('!^\s*T\s*\(\s*"?(?P<value>(?:[^,"])+)"?\s*,?\s*(?P<children>.*)\s*\)\s*$!s', $string, $matches)) {
             throw new DriverException("Cannot convert '{$string}' to node.");
         } else {
-            /** @var $node Node */
-            $node = new $this->nodeClass;
-            $node->setLabel(trim($matches['value']));
+            $node = $this->factory->createNodeFromLabel(trim($matches['value']));
 
             foreach ($this->explode(trim($matches['children'])) as $childString)
             {

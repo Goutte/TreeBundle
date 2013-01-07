@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Driver;
 
 use Goutte\TreeBundle\Exception\DriverException;
+use Goutte\TreeBundle\Factory\NodeFactoryInterface;
 use Goutte\TreeBundle\Is\Driver as DriverInterface;
 use Goutte\TreeBundle\Is\Node;
 
@@ -25,9 +26,11 @@ A
  */
 class Ascii implements DriverInterface
 {
-    public function __construct($nodeClass)
+    protected $factory;
+
+    public function __construct(NodeFactoryInterface $factory)
     {
-        $this->nodeClass = $nodeClass;
+        $this->factory = $factory;
     }
 
     public function nodeToString(Node $node)
@@ -95,9 +98,7 @@ class Ascii implements DriverInterface
      */
     public function stringArrayToNode($array)
     {
-        /** @var $node Node */
-        $node = new $this->nodeClass;
-        $node->setLabel($this->unescape($array[0]));
+        $node = $this->factory->createNodeFromLabel($this->unescape($array[0]));
 
         $childArray = array();
         for ($i=1; $i<count($array); $i++) {
