@@ -2,10 +2,16 @@
 
 namespace Goutte\TreeBundle\Tests\TestCase;
 
-use Goutte\TreeBundle\Model\AbstractNode;
+use Goutte\TreeBundle\Is\Node;
+use Goutte\TreeBundle\Factory\NodeFactoryInterface;
+use Goutte\TreeBundle\Tests\TestCase\DefaultNodeFactory;
 
-abstract class DriverTestCase extends \PHPUnit_Framework_TestCase implements DriverTestCaseInterface
+abstract class DriverTestCase
+    extends \PHPUnit_Framework_TestCase
+    implements DriverTestCaseInterface, NodeFactoryInterface
 {
+    use DefaultNodeFactory;
+
     /** @var \Goutte\TreeBundle\Is\Driver */
     protected $driver;
 
@@ -51,14 +57,11 @@ abstract class DriverTestCase extends \PHPUnit_Framework_TestCase implements Dri
     }
 
     /**
-     * @param string $value (optional) The value the node will hold
-     * @return AbstractNode
+     * @param string $label (optional) The value the node will hold
+     * @return Node
      */
-    protected function createNode($value=null)
+    protected function createNode($label='')
     {
-        $mock = $this->getMockForAbstractClass('Goutte\TreeBundle\Model\AbstractNode');
-        if (null !== $value) $mock->setLabel($value);
-
-        return $mock;
+        return $this->createNodeFromLabel($label);
     }
 }

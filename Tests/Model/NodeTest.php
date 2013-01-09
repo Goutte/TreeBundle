@@ -2,25 +2,27 @@
 
 namespace Goutte\TreeBundle\Tests\Model;
 
-use Goutte\TreeBundle\Model\AbstractNode;
-use Goutte\TreeBundle\Exception\TreeIntegrityException;
-use Goutte\TreeBundle\Is\Node as NodeInterface;
+use Goutte\TreeBundle\Is\Node;
+use Goutte\TreeBundle\Factory\NodeFactoryInterface;
+use Goutte\TreeBundle\Tests\TestCase\DefaultNodeFactory;
 
-class NodeTest extends \PHPUnit_Framework_TestCase
+class NodeTest extends \PHPUnit_Framework_TestCase implements NodeFactoryInterface
 {
-    /** @var NodeInterface */
+    use DefaultNodeFactory;
+    
+    /** @var Node */
     protected $nodeA = null;
-    /** @var NodeInterface */
+    /** @var Node */
     protected $nodeB = null;
-    /** @var NodeInterface */
+    /** @var Node */
     protected $nodeC = null;
-    /** @var NodeInterface */
+    /** @var Node */
     protected $nodeD = null;
-    /** @var NodeInterface */
+    /** @var Node */
     protected $nodeE = null;
-    /** @var NodeInterface */
+    /** @var Node */
     protected $nodeF = null;
-    /** @var NodeInterface */
+    /** @var Node */
     protected $nodeG = null;
 
     public function setUp()
@@ -362,9 +364,9 @@ class NodeTest extends \PHPUnit_Framework_TestCase
      * Asserts that the subtree rooted by the specified $node has integrity,
      * meaning that any node's children have said node as parent
      *
-     * @param NodeInterface $node
+     * @param Node $node
      */
-    protected function assertSubTreeIntegrity(NodeInterface $node)
+    protected function assertSubTreeIntegrity(Node $node)
     {
         if (!$node->isLeaf()) {
             foreach ($node->getChildren() as $childNode) {
@@ -378,13 +380,11 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $label Optional, the label of the newly created mock node
-     * @return AbstractNode
+     * @return Node
      */
     protected function createNode($label='')
     {
-        $node = $this->getMockForAbstractClass('Goutte\TreeBundle\Model\AbstractNode');
-        $node->setLabel($label);
-        return $node;
+        return $this->createNodeFromLabel($label);
     }
 }
 

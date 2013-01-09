@@ -259,7 +259,7 @@ v1.8
 - ->getAncestors()
 - ->getRandomAncestor($includeSelf=false)
 
-v2.0
+vX.0
 ----
 
 - Empty labels in parenthesis driver
