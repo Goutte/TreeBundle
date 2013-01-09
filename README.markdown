@@ -1,13 +1,13 @@
 TreeBundle
 ==========
 
-The Tree structure is currently designed with only one model, the [Node](https://github.com/Goutte/TreeBundle/blob/master/Model/AbstractNode.php).
-
 Let:
 
 * Tree = Rooted Tree
 * Node = Rooted Tree Node
 
+The Tree structure is currently designed with only two models, the Node and the Tree.
+The Tree is mostly a Composite for the Node.
 
 Provides a service for serializing and unserializing nodes, to and from strings such as `A(B,C(D))`.
 
@@ -35,6 +35,11 @@ The original purpose of this bundle is to provide a toolset for reading/writing 
 or configuring the hierarchy of a menu in plain text for example.
 
 Feel free to extend it to suit your needs, though.
+
+Requirements
+------------
+
+This bundle requires PHP > 5.4
 
 Install
 -------
