@@ -9,6 +9,8 @@ use Goutte\TreeBundle\Is\Node;
 
 /*
 
+Example I/O
+
 A
 +--B
 |  +--C
@@ -20,9 +22,10 @@ A
 
 /**
  * Driver for Ascii trees like the one above
+ * The letter is the Label of the Node (can be any PHP string)
  *
  * Notes:
- * - (un)escapes linebreaks in values
+ * - (un)escapes EOLs (End Of Line) into '\n' in labels
  */
 class Ascii implements DriverInterface
 {
@@ -35,7 +38,7 @@ class Ascii implements DriverInterface
 
     public function nodeToString(Node $node)
     {
-        return implode("\n",$this->nodeToStringArray($node));
+        return implode(PHP_EOL, $this->nodeToStringArray($node));
     }
 
     public function stringToNode($string)
@@ -46,7 +49,7 @@ class Ascii implements DriverInterface
             return null;
         }
 
-        $array = explode("\n", $string); // may not play nice with REALLY BIG trees
+        $array = explode(PHP_EOL, $string); // may not play nice with REALLY BIG trees
 
         return $this->stringArrayToNode($array);
     }
@@ -120,14 +123,13 @@ class Ascii implements DriverInterface
 
     protected function escape($string)
     {
-        $linebreaks = array("\r\n","\r","\n");
-        $string = str_replace($linebreaks,'\n',$string);
+        $string = str_replace(PHP_EOL, '\n', $string);
         return trim($string);
     }
 
     protected function unescape($string)
     {
-        $string = str_replace('\n',"\n",$string);
+        $string = str_replace('\n', PHP_EOL, $string);
         return trim($string);
     }
 
