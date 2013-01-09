@@ -3,6 +3,12 @@ TreeBundle
 
 The Tree structure is currently designed with only one model, the [Node](https://github.com/Goutte/TreeBundle/blob/master/Model/AbstractNode.php).
 
+Let:
+
+* Tree = Rooted Tree
+* Node = Rooted Tree Node
+
+
 Provides a service for serializing and unserializing nodes, to and from strings such as `A(B,C(D))`.
 
 Drivers provided :

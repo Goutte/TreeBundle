@@ -178,7 +178,7 @@ interface Node {
     public function removeChildren();
 
     /**
-     * Get an array of the nodes along the path to the specified node,
+     * Get an array of the nodes along the shortest path to the specified node,
      * excluding this node and the specified node
      *
      * @throws \Goutte\TreeBundle\Exception\DisjointNodesException when path does not exist
