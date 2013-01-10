@@ -23,14 +23,14 @@ class Timbre extends StringUtilsDriver implements DriverInterface
         $this->factory = $factory;
     }
 
-    public function nodeToString(Node $node)
+    public function treeToString(Node $tree)
     {
         $children = array();
-        foreach ($node->getChildren() as $child) {
-            $children[] = $this->nodeToString($child);
+        foreach ($tree->getChildren() as $child) {
+            $children[] = $this->treeToString($child);
         }
 
-        $value = (string) $node->getLabel();
+        $value = (string) $tree->getLabel();
 
         if ($this->isNumeric($value) || $this->isBoolean($value)) {
             $s = "T({$value})";
@@ -47,7 +47,7 @@ class Timbre extends StringUtilsDriver implements DriverInterface
         return $s;
     }
 
-    public function stringToNode($string)
+    public function stringToTree($string)
     {
         $matches = array();
         if (!preg_match('!^\s*T\s*\(\s*"?(?P<value>(?:[^,"])+)"?\s*,?\s*(?P<children>.*)\s*\)\s*$!s', $string, $matches)) {
@@ -57,7 +57,7 @@ class Timbre extends StringUtilsDriver implements DriverInterface
 
             foreach ($this->explode(trim($matches['children'])) as $childString)
             {
-                $node->addChild($this->stringToNode($childString));
+                $node->addChild($this->stringToTree($childString));
             }
 
             return $node;

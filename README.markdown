@@ -7,9 +7,27 @@ Let:
 * Node = Rooted Tree Node
 
 The Tree structure is currently designed with only two models, the Node and the Tree.
-The Tree is mostly a Composite for the Node.
+The Tree is a Composite for the Node, and may compose with a variety of traits, the only one actually coded being ComposeWithRootNode.
 
-Provides a service for serializing and unserializing nodes, to and from strings such as `A(B,C(D))`.
+Question: Proper Tree/Node hierarchy ?
+
+- Tree extends Node
+  - currently working
+  - When expecting Tree (eg: drivers), cannot pass a Node
+  - confusing, by stating a Tree *is* a Node.
+- Node extends Tree
+  - + correct, a Node *is* a (sub)Tree
+  - + a Node has Tree capabilities
+  - + don't need ComposeWithRootNode
+  - + can pass a Node where a Tree is expected
+  - - cannot pass a Tree where a Node is expected
+  - - some method names don't make sense for Tree (getSibling, getParent, etc)
+  - - Tree cannot have methods Node has not, like ... what ?
+- Node extends Nodable and Tree extends Nodable
+  - Nodable word is ... ugly ? (Treeable?)
+  -
+
+This bundle also provides a service for serializing and unserializing trees, to and from strings such as `A(B,C(D))`.
 
 Drivers provided :
   - Parenthesis : `A(B,C(D))`

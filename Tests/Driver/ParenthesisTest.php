@@ -22,7 +22,7 @@ class ParenthesisTest extends DriverTestCase
         $nodeA->addChild($nodeC);
 
         $expected = 'A\(A(B\,,C)';
-        $actual = $this->driver->nodeToString($nodeA);
+        $actual = $this->driver->treeToString($nodeA);
 
         $this->assertEquals($expected, $actual, "It should escape parenthesis and commas in the labels");
     }
@@ -30,7 +30,7 @@ class ParenthesisTest extends DriverTestCase
     public function testUnescapingParenthesisAndCommas()
     {
         $treeString = 'A\(A(B\,,C)';
-        $nodeA = $this->driver->stringToNode($treeString);
+        $nodeA = $this->driver->stringToTree($treeString);
         $children = $nodeA->getChildren();
         $nodeB = $children[0];
         $nodeC = $children[1];

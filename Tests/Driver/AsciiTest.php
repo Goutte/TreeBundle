@@ -30,7 +30,7 @@ A
 +--D
 EOF;
 
-        $this->assertEquals($expected, $this->driver->nodeToString($nodeA), "It should properly convert to string");
+        $this->assertEquals($expected, $this->driver->treeToString($nodeA), "It should properly convert to string");
     }
 
     public function testEscapingLinebreaksInValues()
@@ -45,11 +45,11 @@ A
 +--B\\nBQ
 EOF;
 
-        $actual = $this->driver->nodeToString($nodeA);
+        $actual = $this->driver->treeToString($nodeA);
 
         $this->assertEquals($expected, $actual, "It should properly escape linebreaks in labels");
 
-        $node = $this->driver->stringToNode($actual);
+        $node = $this->driver->stringToTree($actual);
         $this->assertEquals("B\nBQ", $node->getFirstChild()->getLabel(), "It should properly unescape linebreaks in labels");
     }
 
@@ -62,7 +62,7 @@ EOF;
 +---F|
 EOF;
 
-        $node = $this->driver->stringToNode($treeString);
+        $node = $this->driver->stringToTree($treeString);
 
         $this->assertEquals('+A', $node->getLabel(), "It should get labels starting with a +");
         $this->assertEquals('B+', $node->getFirstChild()->getLabel(), "It should get labels ending with a +");
@@ -83,7 +83,7 @@ EOF;
         }
 
         echo "Generating random tree :\n";
-        echo $this->driver->nodeToString($nodes[0]);
+        echo $this->driver->treeToString($nodes[0]);
     }
 
 

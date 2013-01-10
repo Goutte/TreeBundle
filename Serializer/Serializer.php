@@ -67,13 +67,13 @@ class Serializer {
         return $this->driver;
     }
 
-    public function toString(NodeInterface $node)
+    public function toString(NodeInterface $tree)
     {
-        return $this->getDriver()->nodeToString($node);
+        return $this->getDriver()->treeToString($tree);
     }
 
-    public function toNode($string)
+    public function toTree($string)
     {
-        return $this->getDriver()->stringToNode($string);
+        return $this->getDriver()->stringToTree($string);
     }
 }

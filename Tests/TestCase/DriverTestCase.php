@@ -36,8 +36,8 @@ abstract class DriverTestCase
      */
     public function testBackAndForthConversionConvertsInto($initialString, $expectedString)
     {
-        $node = $this->driver->stringToNode($initialString);
-        $resultString = $this->driver->nodeToString($node);
+        $node = $this->driver->stringToTree($initialString);
+        $resultString = $this->driver->treeToString($node);
 
         $this->assertEquals($expectedString, $resultString, "It should convert to the expected tree string after a back-and-forth conversion");
     }
@@ -50,8 +50,8 @@ abstract class DriverTestCase
      */
     public function testBackAndForthConversionStaysTheSame($initialString)
     {
-        $node = $this->driver->stringToNode($initialString);
-        $resultString = $this->driver->nodeToString($node);
+        $node = $this->driver->stringToTree($initialString);
+        $resultString = $this->driver->treeToString($node);
 
         $this->assertEquals($initialString, $resultString, "It should be the same tree string after a back-and-forth conversion");
     }

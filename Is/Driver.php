@@ -3,18 +3,19 @@
 namespace Goutte\TreeBundle\Is;
 
 use Goutte\TreeBundle\Is\Node;
+use Goutte\TreeBundle\Is\Tree;
 
 interface Driver
 {
     /**
-     * @param Node $node
+     * @param Node $tree
      * @return mixed
      */
-    public function nodeToString(Node $node);
+    public function treeToString(Node $tree);
 
     /**
      * @param $string
-     * @return Node|null
+     * @return Tree|null
      */
-    public function stringToNode($string);
+    public function stringToTree($string);
 }

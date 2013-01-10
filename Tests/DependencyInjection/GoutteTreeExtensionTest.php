@@ -28,12 +28,12 @@ class GoutteTreeExtensionTest extends \PHPUnit_Framework_TestCase
         }
 
         $testTree = 'Symfony(Http-Kernel,Http-Foundation)';
-        $testNode = $serializer->toNode($testTree);
+        $testNode = $serializer->toTree($testTree);
         $this->assertEquals($testTree, $serializer->toString($testNode), "The parenthesis driver should be available as default");
 
         $serializer->useDriver('timbre');
         $testTree = 'T("*",T(6),T(9))';
-        $testNode = $serializer->toNode($testTree);
+        $testNode = $serializer->toTree($testTree);
         $this->assertEquals($testTree, $serializer->toString($testNode), "The timbre driver should be available");
 
         $serializer->useDriver('ascii');
@@ -44,7 +44,7 @@ mul
    +--564.12
 EOF;
 
-        $testNode = $serializer->toNode($testTree);
+        $testNode = $serializer->toTree($testTree);
         $this->assertEquals($testTree, $serializer->toString($testNode), "The ascii driver should be available");
     }
 

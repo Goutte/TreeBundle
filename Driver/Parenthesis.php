@@ -24,14 +24,14 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
         $this->factory = $factory;
     }
 
-    public function nodeToString(Node $node)
+    public function treeToString(Node $tree)
     {
         $children = array();
-        foreach ($node->getChildren() as $child) {
-            $children[] = $this->nodeToString($child);
+        foreach ($tree->getChildren() as $child) {
+            $children[] = $this->treeToString($child);
         }
 
-        $s = $this->escapeValue($node);
+        $s = $this->escapeValue($tree);
         if (!empty($children)) {
             $s .= '(';
             $s .= implode(',',$children);
@@ -41,7 +41,7 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
         return $s;
     }
 
-    public function stringToNode($string)
+    public function stringToTree($string)
     {
         $matches = array();
         if (!preg_match("!^(?P<value>(?:\\\\\(|\\\\\)|[^(])+)(?:\((?P<children>.*)\))?$!", $string, $matches)) {
@@ -52,7 +52,7 @@ class Parenthesis extends StringUtilsDriver implements DriverInterface
             $children = !empty($matches['children']) ? trim($matches['children']) : '';
             foreach ($this->explode($children) as $childString)
             {
-                $node->addChild($this->stringToNode($childString));
+                $node->addChild($this->stringToTree($childString));
             }
 
             return $node;

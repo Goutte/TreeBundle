@@ -36,12 +36,12 @@ class Ascii implements DriverInterface
         $this->factory = $factory;
     }
 
-    public function nodeToString(Node $node)
+    public function treeToString(Node $tree)
     {
-        return implode(PHP_EOL, $this->nodeToStringArray($node));
+        return implode(PHP_EOL, $this->treeToStringArray($tree));
     }
 
-    public function stringToNode($string)
+    public function stringToTree($string)
     {
         $string = trim($string);
 
@@ -51,21 +51,21 @@ class Ascii implements DriverInterface
 
         $array = explode(PHP_EOL, $string); // may not play nice with REALLY BIG trees
 
-        return $this->stringArrayToNode($array);
+        return $this->stringArrayToTree($array);
     }
 
     /**
-     * @param Node $node
+     * @param Node $tree
      * @return string[]
      */
-    public function nodeToStringArray(Node $node)
+    public function treeToStringArray(Node $tree)
     {
         $children = array();
-        foreach ($node->getChildren() as $child) {
-            $children[] = $this->nodeToStringArray($child);
+        foreach ($tree->getChildren() as $child) {
+            $children[] = $this->treeToStringArray($child);
         }
 
-        $array = array($this->escape($node->getLabel()));
+        $array = array($this->escape($tree->getLabel()));
 
         if (empty($children)) {
             return $array;
@@ -96,10 +96,11 @@ class Ascii implements DriverInterface
 
     /**
      * Creates root node of provided subtree, and recurse with children's arrays by removing the first 3 characters
+     *
      * @param string[] $array
      * @return Node
      */
-    public function stringArrayToNode($array)
+    public function stringArrayToTree($array)
     {
         $node = $this->factory->createNodeFromLabel($this->unescape($array[0]));
 
@@ -107,7 +108,7 @@ class Ascii implements DriverInterface
         for ($i=1; $i<count($array); $i++) {
             if ('+' === $array[$i]{0}) {
                 if (!empty($childArray)) {
-                    $node->addChild($this->stringArrayToNode($childArray));
+                    $node->addChild($this->stringArrayToTree($childArray));
                 }
                 $childArray = array(substr($array[$i], 3));
             } else {
@@ -115,7 +116,7 @@ class Ascii implements DriverInterface
             }
         }
         if (!empty($childArray)) {
-            $node->addChild($this->stringArrayToNode($childArray));
+            $node->addChild($this->stringArrayToTree($childArray));
         }
 
         return $node;
