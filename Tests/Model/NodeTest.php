@@ -98,23 +98,57 @@ class NodeTest extends \PHPUnit_Framework_TestCase implements NodeFactoryInterfa
     {
         $this->setUpTestTree();
 
-        $clone = clone $this->nodeA;
+        $clonable = $this->nodeA;
 
-        $this->assertFalse($clone === $this->nodeA,
+        $clone = clone $clonable;
+
+        $this->assertFalse($clone === $clonable,
             "It should create a new object");
         $this->assertNull($clone->getParent(),
             "It should create a new root");
-        $this->assertEquals($this->nodeA->getLabel(), $clone->getLabel(),
+        $this->assertEquals($clonable->getLabel(), $clone->getLabel(),
             "It should clone the label");
-        $this->assertFalse($clone->getFirstChild() === $this->nodeA->getFirstChild(),
+        $this->assertFalse($clone->getFirstChild() === $clonable->getFirstChild(),
             "It should clone the children too");
-        $this->assertEquals($clone->getFirstChild()->getLabel(), $this->nodeA->getFirstChild()->getLabel(),
+        $this->assertEquals($clone->getFirstChild()->getLabel(), $clonable->getFirstChild()->getLabel(),
             "It should clone the first child's label");
-        $this->assertEquals($clone->getSecondChild()->getLabel(), $this->nodeA->getSecondChild()->getLabel(),
+        $this->assertEquals($clone->getSecondChild()->getLabel(), $clonable->getSecondChild()->getLabel(),
             "It should clone the second child's label");
         $this->assertTrue($clone === $clone->getFirstChild()->getParent(),
             "It should assign proper parentship to the children");
     }
+
+    /**
+     * You should *never* clone a branch/leaf because the parent of the clone will be the parent of the cloned node
+     * but this parent will not have the clone as its child. => TREE INTEGRITY VIOLATION
+     *
+     * Instead, use the Tree model :
+     * $clone = new Tree($clonable);
+     */
+    public function testCloneBranch()
+    {
+        $this->setUpTestTree();
+
+        $clonable = $this->nodeB;
+
+        $clone = clone $clonable;
+
+        $this->assertFalse($clone === $clonable,
+            "It should create a new object");
+        $this->assertEquals($clone->getParent(), $clonable->getParent(),
+            "[PITFALL] The clone will have the same parent as the clonable");
+        $this->assertEquals($clonable->getLabel(), $clone->getLabel(),
+            "It should clone the label");
+        $this->assertFalse($clone->getFirstChild() === $clonable->getFirstChild(),
+            "It should clone the children too");
+        $this->assertEquals($clone->getFirstChild()->getLabel(), $clonable->getFirstChild()->getLabel(),
+            "It should clone the first child's label");
+        $this->assertEquals($clone->getSecondChild()->getLabel(), $clonable->getSecondChild()->getLabel(),
+            "It should clone the second child's label");
+        $this->assertTrue($clone === $clone->getFirstChild()->getParent(),
+            "It should assign proper parentship to the children");
+    }
+
 
     public function testIsParentOf()
     {

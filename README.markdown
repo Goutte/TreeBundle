@@ -121,6 +121,22 @@ Using your own Node
 Then, configure the service to use your own Node class.
 
 
+Cloning
+-------
+
+Cloning is propagated to children recursively. You can clone root nodes to create whole new trees.
+Do not clone branch nodes, though, because the parent of the clone will not have the clone as child.
+
+    ``` php
+    $clone = clone $myRootNode; // you can do this
+
+    $clone = clone $myBranchNode; // you really should not do this
+    $clone->setParent(null, false); // ... unless you do this too
+
+    $clone = new Goutte\TreeBundle\Model\Tree($myBranchNode); // do this instead
+    ```
+
+
 Writing a Driver
 ----------------
 
@@ -171,6 +187,8 @@ You may skip usage of `->useDriver()` by telling the service to use your driver 
 ``` xml
     <tag name="goutte_tree.driver" default="true" />
 ```
+
+
 
 
 Testing
@@ -225,6 +243,9 @@ Eg:
 ChangeLog
 =========
 
+v1.x works with php >= 5.3
+
+v2.x works with php >= 5.4
 
 v1.0
 ----
@@ -281,6 +302,14 @@ v1.8
 
 - ->getAncestors()
 - ->getRandomAncestor($includeSelf=false)
+
+
+v2.0
+----
+
+- Using Traits
+- Added Tree model
+
 
 vX.0
 ----

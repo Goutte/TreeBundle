@@ -150,10 +150,11 @@ interface Node {
      * Should move my whole subtree
      * Should make me root of my own tree if specified $node is null
      *
-     * @throws \Goutte\TreeBundle\Exception\CyclicReferenceException when a simple cycle is detected
+     *
      * @param Node|null $node
+     * @param bool $careAboutIntegrity
      */
-    public function setParent($node);
+    public function setParent($node, $careAboutIntegrity=true);
 
     /**
      * Adds specified node as child

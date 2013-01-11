@@ -31,9 +31,11 @@ class CompositeTreeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($tree->getPreviousSibling(), "It should not have siblings");
         $this->assertNull($tree->getNextSibling(), "It should not have siblings");
 
+        $this->assertNull($tree->getRoot()->getParent(), "Its root node should not have a parent");
+
         // it should delegate other method calls to its root node
-        // ~> build an array of compositing method names as string,
-        //    loop over it, assert equity of tree and root node results ?
+        // ~> build an array of compositing unparameterized method names as string,
+        //    loop over it, assert equity of tree and root node results ? not really dry.
     }
 
     public function testExceptionOnEmptyTree()

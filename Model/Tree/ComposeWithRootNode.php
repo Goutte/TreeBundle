@@ -3,6 +3,7 @@
 namespace Goutte\TreeBundle\Model\Tree;
 
 use Goutte\TreeBundle\Exception\EmptyTreeException;
+use Goutte\TreeBundle\Exception\NonEmptyTreeException;
 use Goutte\TreeBundle\Is\Node;
 
 trait ComposeWithRootNode
@@ -25,32 +26,36 @@ trait ComposeWithRootNode
         return $this->_root;
     }
 
+    /**
+     * @param \Goutte\TreeBundle\Is\Node $root
+     * @throws NonEmptyTreeException
+     */
     public function setRoot(Node $root)
     {
-        return $this->_root;
+        if (!empty($this->_root)) throw new NonEmptyTreeException;
+
+        $this->_root = clone $root;
+        $this->_root->setParent(null, false);
     }
 
     public function isRoot()
     {
-        return true;
+        return $this->getRoot()->isRoot();
     }
 
     public function getPreviousSibling()
     {
-        return null;
-        //return $this->getRoot()->getPreviousSibling();
+        return $this->getRoot()->getPreviousSibling();
     }
 
     public function getNextSibling()
     {
-        return null;
-        //return $this->getRoot()->getNextSibling();
+        return $this->getRoot()->getNextSibling();
     }
 
     public function getParent()
     {
-        return null;
-        //return $this->getRoot()->getParent();
+        return $this->getRoot()->getParent();
     }
 
     public function isLeaf()
@@ -128,9 +133,9 @@ trait ComposeWithRootNode
         return $this->getRoot()->getRandomDescendant($includeSelf);
     }
 
-    public function setParent($node)
+    public function setParent($node, $careAboutIntegrity=true)
     {
-        $this->getRoot()->setParent($node);
+        $this->getRoot()->setParent($node, $careAboutIntegrity);
     }
 
     public function addChild(Node $node)
